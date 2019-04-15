@@ -4,6 +4,7 @@ np.random.seed(1016)
 import yaml
 import queue
 import struct
+import pickle as pk
 from multiprocessing import Process
 from threading import Thread
 from tqdm import tqdm
@@ -246,7 +247,7 @@ if __name__ == '__main__':
 		
 		if float(eer) < best_val_eer:
 			best_val_eer = float(eer)
-			model.save_weights(save_dir +  'models_pretrn/best_model_on_validation.h5'%(epoch, eer))
+			model.save_weights(save_dir +  'models_pretrn/best_model_on_validation.h5')
 	
 	
 		#evaluate!
@@ -367,7 +368,7 @@ if __name__ == '__main__':
 		
 		if float(eer) < best_val_eer:
 			best_val_eer = float(eer)
-			model.save_weights(save_dir +  'models_RawNet/best_model_on_validation.h5'%(epoch, eer))
+			model.save_weights(save_dir +  'models_RawNet/best_model_on_validation.h5')
 	
 	
 		#evaluate!
@@ -400,3 +401,32 @@ if __name__ == '__main__':
 		if not bool(parser['save_best_only']):
 			model.save_weights(save_dir +  'models_RawNet/%d-%.4f.h5'%(epoch, eer))
 	f_eer.close()
+
+
+	#======================================================================#
+	#==Extract RawNet Embeddings===========================================#
+	#======================================================================#
+
+	model.load_weights(save_dir + 'models_RawNet/best_model_on_validation.h5')
+	if not os.path.exists(parser['gru_embeddings']):
+		os.makedirs(parser['gru_embeddings'])
+
+	print('Extracting Embeddings from GRU model: dev set')
+	dev_dic_embeddings = compose_spkFeat_dic(lines = dev_lines,
+		model = model_gru_pred,
+		f_desc_dic = {},
+		base_dir = parser['base_dir'])
+
+	print('Extracting Embeddings from GRU model: eval set')
+	eval_dic_embeddings = compose_spkFeat_dic(lines = eval_lines,
+		model = model_gru_pred,
+		f_desc_dic = {},
+		base_dir = parser['base_dir'])
+
+	f_embeddings = open(parser['gru_embeddings'] + 'speaker_embeddings_RawNet', 'wb')
+	pk.dump({'dev_dic_embeddings': dev_dic_embeddings, 'eval_dic_embeddings': eval_dic_embeddings},
+		f_embeddings,
+		protocol = pk.HIGHEST_PROTOCOL)
+
+
+
