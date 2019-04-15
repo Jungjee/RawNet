@@ -140,7 +140,7 @@ def residual_block_conv(input_tensor, filters = [], initializer = None, regulari
 
 
 def get_model(argDic):
-	inputs = Input(shape = (None, 1))
+	inputs = Input(shape = (None, 1), name='input_pre')
 	c_input = Input(shape = (argDic['nb_spk'],))
 
 	#strided Conv
@@ -187,7 +187,7 @@ def get_model(argDic):
 
 	for i in range(len(argDic['nb_dense_node'])):
 		if i == len(argDic['nb_dense_node']) -1:
-			name = 'code'
+			name = 'code_pre'
 		else:
 			name = 'dense_act_%d'%(i+1)
 		x = Dense(argDic['nb_dense_node'][i],

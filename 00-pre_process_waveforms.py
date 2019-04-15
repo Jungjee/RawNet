@@ -42,7 +42,7 @@ def join_scp(f_dir, nb_proc):
 
 
 DB_dir = '/DB/VoxCeleb1/voxceleb1_wav/'#directory where downloaded VoxCeleb1 dataset exists
-scp_dir = '/DB/VoxCeleb1/feature/waveform/'#directory to store processed raw waveforms
+scp_dir = '/DB/'#directory to store processed raw waveforms
 dataset = 'dev'#execute this script with either 'dev' or 'eval'
 
 if __name__ == '__main__':
