@@ -31,6 +31,7 @@ class spk_basis_loss(Dense):
 			kwargs['input_shape'] = (kwargs.pop('input_dim'),)
 		super(Dense, self).__init__(**kwargs)
 		self.units = units
+		self.s = s
 		
 		self.kernel_initializer = initializers.get(kernel_initializer)
 		self.kernel_regularizer = regularizers.get(kernel_regularizer)

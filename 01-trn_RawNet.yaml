@@ -12,7 +12,7 @@ dev_scp: scp/dev_wav_pe.scp
 eval_scp: scp/eval_wav_pe.scp
 epoch: 100
 save_dir: /model/networks/
-name: reproduce
+name: reproduce_RawNet
 mg: 1 #flag for multi-GPU training
 nb_gpu: 2 #number of GPUs
 c_lambda: 0.001
