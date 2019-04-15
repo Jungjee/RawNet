@@ -1,19 +1,15 @@
 batch_size: 102
 nb_samp: 59049
 base_dir: /DB
-#optimizer: SGD
 optimizer: Adam
-#opt_decay: 0.0
 opt_decay: 0.0001
 amsgrad: 1
 lr: 0.001
-#momentum: 0.9
 dev_scp: /DB/VoxCeleb1/feature/waveform/dev_wav_pe.scp
 eval_scp: /DB/VoxCeleb1/feature/waveform/eval_wav_pe.scp
 epoch: 100
 save_dir: /exp/model/networks/
-#name: 7layers_18
-name: samsung_small_16_128
+name: reproduce
 mg: 1
 nb_gpu: 2
 c_lambda: 0.001
@@ -21,20 +17,11 @@ trials: /DB/VoxCeleb1/voxceleb1_test.txt
 val_trials: /DB/VoxCeleb1/voxceleb1_val.txt
 
 model:
-  #nb_s_conv_filt: 128
-  nb_s_conv_filt: 16
+  nb_s_conv_filt: 128
   initializer: he_normal
   wd: 0.0001
-  #nb_conv_filt: [[128, 128], [256, 256], [256, 256], 256]
-  #nb_conv_filt: [[16, 16], [128, 128], [256, 256], 256] #samsung_small_1
-  #nb_conv_filt: [[32, 32], [128, 128], [256, 256], 256] #samsung_small_2
-  #nb_conv_filt: [[16, 16], [256, 256], [256, 256], 256] #samsung_small_16_256
-  #nb_conv_filt: [[32, 32], [128, 128], [128, 128], 128] #samsung_small_32_128
-  nb_conv_filt: [[16, 16], [128, 128], [128, 128], 128] #samsung_small_16_96_128
+  nb_conv_filt: [[128, 128], [256, 256], [256, 256], 256]
   nb_dense_node: [128]
-  ln_scale: 10
   c_alpha: 0.5
-  use_H_loss: 0
-  bs_nb_k: 100
   
 
