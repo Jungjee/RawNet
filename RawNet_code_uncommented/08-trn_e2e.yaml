@@ -1,0 +1,64 @@
+batch_size: 120
+#batch_size: 600
+nb_samp: 59049
+base_dir: /DB
+#optimizer: SGD
+optimizer: Adam
+#optimizer: RMSprop
+opt_decay: 0.0001
+amsgrad: 1
+lr: 0.001
+#lr: 0.00001
+#momentum: 0.9
+dev_scp: /DB/VoxCeleb1/feature/waveform/dev_wav_pe.scp
+eval_scp: /DB/VoxCeleb1/feature/waveform/eval_wav_pe.scp
+epoch: 1000
+save_dir: /exp/model/networks/
+name: _36
+#name: test 
+mg: 0
+nb_gpu: 3
+
+trials: /DB/VoxCeleb1/voxceleb1_test.txt
+val_trials: /DB/VoxCeleb1/voxceleb1_val.txt
+restart: 0
+#restart_model: 8-0.0247.h5
+
+gru_embeddings: /exp/data/gru_embeddings/
+gru_weights: /exp/model/networks/rwcnn_gru_cLoss_bsLoss_7layers_23/36-0.0115.h5
+extract_embeddings: 0
+nb_batch_per_epoch: 1000
+
+model_gru: 
+  nb_s_conv_filt: 128
+  #initializer: orthogonal
+  initializer: he_normal
+  wd: 0.0001
+  nb_conv_filt: [[128, 128], [256, 256], [256, 256], 256]
+  nb_dense_node: [128]
+  ln_scale: 10
+  c_alpha: 0.5
+  use_H_loss: 0
+  bs_nb_k: 100
+  nb_gru_node: [1024]
+  req_drop: 0.2
+  
+model:
+  #nb_dense_node: [512, 512, 512]
+  #nb_dense_node: [1024, 1024, 1024, 1024]
+  #nb_dense_node: [1024, 1024, 1024, 1024, 1024]
+  #nb_dense_node: [1024, 1024, 1024, 1024, 1024, 1024]
+  #nb_dense_node: [1024, 1024, 1024]
+  #nb_dense_node: [1024, 1024, 1024, 1024, 1024, 1024]
+  nb_dense_node: [1024, 1024, 1024, 1024]
+  #initializer: he_normal
+  initializer: RandomUniform
+  #initializer: orthogonal
+  #initializer: RandomNormal
+  #initializer: TruncatedNormal
+  #wd: 0.0001
+  #wd: 0.0
+  wd: 0.00005
+  dim_embedding: 128
+  drop_ratio: 0.5
+  early_nb_dense_node: [128, 512, 128]

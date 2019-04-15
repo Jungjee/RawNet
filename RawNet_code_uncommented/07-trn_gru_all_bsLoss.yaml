@@ -1,0 +1,47 @@
+kbatch_size: 102
+nb_samp: 59049
+base_dir: /DB
+#optimizer: SGD
+optimizer: Adam
+#optimizer: RMSprop
+#opt_decay: 0.0001
+opt_decay: 0.0001
+amsgrad: 1
+lr: 0.001
+#lr: 0.00001
+#momentum: 0.9
+dev_scp: /DB/VoxCeleb1/feature/waveform/dev_wav_pe.scp
+eval_scp: /DB/VoxCeleb1/feature/waveform/eval_wav_pe.scp
+epoch: 100
+save_dir: /exp/model/networks/
+name: 7layers_26_best_wo_opt_decay
+mg: 1
+nb_gpu: 2
+#c_lambda: 0.001
+#c_lambda: 0.0001
+#c_lambda: 0.0
+#c_lambda: 0.000001
+c_lambda: 0.00001
+trials: /DB/VoxCeleb1/voxceleb1_test.txt
+val_trials: /DB/VoxCeleb1/voxceleb1_val.txt
+restart: 0
+#restart_model: 8-0.0247.h5
+#dir_base_model: /exp/model/networks/rwcnn_cLoss_bsLoss_7layers_13/94-0.0125.h5
+dir_base_model: /exp/model/networks/rwcnn_cLoss_bsLoss_7layers_18/83-0.0347.h5
+freeze: 0
+
+model: 
+  nb_s_conv_filt: 128
+  #initializer: orthogonal
+  initializer: he_normal
+  wd: 0.0001
+  nb_conv_filt: [[128, 128], [256, 256], [256, 256], 256]
+  nb_dense_node: [128]
+  ln_scale: 10
+  c_alpha: 0.5
+  use_H_loss: 0
+  bs_nb_k: 100
+  nb_gru_node: [1024]
+  req_drop: 0.3
+  
+
