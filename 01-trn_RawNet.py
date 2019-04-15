@@ -155,12 +155,6 @@ if __name__ == '__main__':
 		f_json.write(model_json)
 	'''
 
-	'''
-	model, m_name = get_model(argDic = parser['model'])
-	model_pred = Model(inputs=model.get_layer('input_RawNet').input, outputs=model.get_layer('code_RawNet').output)
-	optimizer = eval(parser['optimizer'])(lr=parser['lr'], decay = parser['opt_decay'], amsgrad = bool(parser['amsgrad']))
-	'''
-
 	global q
 	q = queue.Queue(maxsize=1000)
 	dummy_y = np.zeros((parser['batch_size'], 1))
@@ -169,7 +163,7 @@ if __name__ == '__main__':
 	#==Pre-train===========================================================#
 	#======================================================================#
 	model, m_name = get_model_pre(argDic = parser['model'])
-	model_pred = Model(inputs=model.get_layer('input_pre').input, outputs=model.get_layer('code_pre').output)
+	model_pred = Model(inputs=model.get_layer('input_pretrn').input, outputs=model.get_layer('code_pretrn').output)
 
 	save_dir = parser['save_dir'] + m_name + '_' + parser['name'] + '/'
 	with open(save_dir + 'summary_pretrn.txt' ,'w+') as f_summary:
