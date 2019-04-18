@@ -193,7 +193,7 @@ if __name__ == '__main__':
 			loss_weights = {'s_bs_loss':1, 'c_loss': parser['c_lambda']},
 		metrics=['accuracy'])
 	
-	best_val_eer = '99.'
+	best_val_eer = 99.
 	for epoch in tqdm(range(parser['epoch'])):
 		np.random.shuffle(dev_lines)
 		p = Thread(target = process_epoch, args = (dev_lines,

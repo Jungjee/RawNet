@@ -2,6 +2,7 @@ This github project includes codes for reproducing experiments and DNN models us
 ''RawNet: Advanced end-to-end deep neural network using raw waveforms for text-independent speaker verification''
 	* Currently submitted to Interspeech2019 as a conference paper.
 	* arXiv pre-print is at https://arxiv.org/abs/1904.08104
+	
 
 Below are few notes for reproduction
 	1. Script 'lunch_ngc.sh' is used to create a virtual environment for DNN training using NGC(nvidia gpu cloud).
@@ -12,3 +13,6 @@ Below are few notes for reproduction
 
 Other guidelines are currently being updated.
 Email jeewon.leo.jung@gmail.com for other details :-).
+
+Log
+	2019.04.18	: executing 01 script
