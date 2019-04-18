@@ -16,7 +16,7 @@ from sklearn.metrics import roc_curve
 from scipy.optimize import brentq
 from scipy.interpolate import interp1d
 
-from model_RawNet_pre-train import get_model_pre
+from model_RawNet_pre_train import get_model as get_model_pretrn
 from model_RawNet import get_model
 
 def cos_sim(a,b):
@@ -133,9 +133,23 @@ if __name__ == '__main__':
 	val_trials = open(parser['val_trials'], 'r').readlines()
 	nb_batch = int(len(dev_lines) / parser['batch_size'])
 	
+	global q
+	q = queue.Queue(maxsize=1000)
+	dummy_y = np.zeros((parser['batch_size'], 1))
+
+	#======================================================================#
+	#==Pre-train===========================================================#
+	#======================================================================#
+	model, m_name = get_model_pretrn(argDic = parser['model'])
+	model_pred = Model(inputs=model.get_layer('input_pretrn').input, outputs=model.get_layer('code_pretrn').output)
+
+	save_dir = parser['save_dir'] + m_name + '_' + parser['name'] + '/'
 	#make folders
 	if not os.path.exists(save_dir):
 		os.makedirs(save_dir)
+
+	with open(save_dir + 'summary_pretrn.txt' ,'w+') as f_summary:
+		model.summary(print_fn=lambda x: f_summary.write(x + '\n'))
 	
 	f_params = open(save_dir + 'f_params.txt', 'w')
 	for k, v in parser.items():
@@ -149,27 +163,12 @@ if __name__ == '__main__':
 	f_params.write('model_name: %s\n'%m_name)
 	f_params.close()
 
-
 	'''#uncomment to save model architecture in json
 	model_json = model.to_json()
 	with open(save_dir + 'arc.json', 'w') as f_json:
 		f_json.write(model_json)
 	'''
 
-	global q
-	q = queue.Queue(maxsize=1000)
-	dummy_y = np.zeros((parser['batch_size'], 1))
-
-	#======================================================================#
-	#==Pre-train===========================================================#
-	#======================================================================#
-	model, m_name = get_model_pre(argDic = parser['model'])
-	model_pred = Model(inputs=model.get_layer('input_pretrn').input, outputs=model.get_layer('code_pretrn').output)
-
-	save_dir = parser['save_dir'] + m_name + '_' + parser['name'] + '/'
-	with open(save_dir + 'summary_pretrn.txt' ,'w+') as f_summary:
-		model.summary(print_fn=lambda x: f_summary.write(x + '\n'))
-	
 	if not os.path.exists(save_dir  + 'results_pretrn/'):
 		os.makedirs(save_dir + 'results_pretrn/')
 	if not os.path.exists(save_dir  + 'models_pretrn/'):

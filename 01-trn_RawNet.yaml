@@ -16,8 +16,8 @@ name: reproduce_RawNet
 mg: 1 #flag for multi-GPU training
 nb_gpu: 2 #number of GPUs
 c_lambda: 0.001
-trials: /DB/voxceleb1_test.txt
-val_trials: /DB/voxceleb1_val.txt
+trials: /DB/VoxCeleb1/voxceleb1_test.txt
+val_trials: /DB/VoxCeleb1/voxceleb1_val.txt
 save_best_only: 0
 
 gru_embeddings: /exp/data/

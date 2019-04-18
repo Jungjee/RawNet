@@ -22,7 +22,7 @@ def zero_loss(y_true, y_pred):
 
 class spk_basis_loss(Dense):
 	def __init__(self, units,
-				s = 5.
+				s = 5.,
 				kernel_initializer='glorot_uniform',
 				kernel_regularizer=None,
 				kernel_constraint=None,
