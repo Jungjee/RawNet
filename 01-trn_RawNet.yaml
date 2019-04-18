@@ -8,10 +8,10 @@ opt_decay: 0.0001
 amsgrad: 1
 
 lr: 0.001
-dev_scp: scp/dev_wav_pe.scp
-eval_scp: scp/eval_wav_pe.scp
+dev_scp: /DB/VoxCeleb1/feature/waveform/dev_wav_pe.scp
+eval_scp: /DB/VoxCeleb1/feature/waveform/eval_wav_pe.scp
 epoch: 100
-save_dir: /model/networks/
+save_dir: /exp/model/networks/
 name: reproduce_RawNet
 mg: 1 #flag for multi-GPU training
 nb_gpu: 2 #number of GPUs
@@ -20,7 +20,7 @@ trials: /DB/voxceleb1_test.txt
 val_trials: /DB/voxceleb1_val.txt
 save_best_only: 0
 
-gru_embeddings: /data/
+gru_embeddings: /exp/data/
 
 model:
   nb_s_conv_filt: 128
