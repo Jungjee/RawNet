@@ -169,6 +169,7 @@ if __name__ == '__main__':
 		f_json.write(model_json)
 	'''
 
+	"""
 	if not os.path.exists(save_dir  + 'results_pretrn/'):
 		os.makedirs(save_dir + 'results_pretrn/')
 	if not os.path.exists(save_dir  + 'models_pretrn/'):
@@ -279,6 +280,7 @@ if __name__ == '__main__':
 		if not bool(parser['save_best_only']):
 			model.save_weights(save_dir +  'models_pretrn/%d-%.4f.h5'%(epoch, eer))
 	f_eer.close()
+	"""
 	
 	#======================================================================#
 	#==Train RawNet========================================================#
@@ -298,7 +300,7 @@ if __name__ == '__main__':
 	f_eer = open(save_dir + 'eers_RawNet.txt', 'w', buffering=1)
 
 	optimizer = eval(parser['optimizer'])(lr=parser['lr'], decay = parser['opt_decay'], amsgrad = bool(parser['amsgrad']))
-
+	parser['c_lambda'] = parser['c_lambda'] * 0.01
 	if bool(parser['mg']):
 		model_mg = multi_gpu_model(model, gpus=parser['nb_gpu'])
 		model_mg.compile(optimizer = optimizer,
@@ -312,7 +314,7 @@ if __name__ == '__main__':
 			loss_weights = {'gru_s_bs_loss':1, 'gru_c_loss': parser['c_lambda']},
 		metrics=['accuracy'])
 	
-	best_val_eer = '99.'
+	best_val_eer = 99.
 	for epoch in tqdm(range(parser['epoch'])):
 		np.random.shuffle(dev_lines)
 		p = Thread(target = process_epoch, args = (dev_lines,
