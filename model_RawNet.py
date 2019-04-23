@@ -202,7 +202,7 @@ def get_model(argDic):
 	s_bs_out = spk_basis_loss(units = argDic['nb_spk'],
 			kernel_initializer = argDic['initializer'],
 			kernel_regularizer = regularizers.l2(argDic['wd']),
-			name = 's_bs_loss')([x, c_input])
+			name = 'gru_s_bs_loss')([x, c_input])
 
 	c_out = CenterLossLayer(alpha = argDic['c_alpha'],
 			nb_center = argDic['nb_spk'],

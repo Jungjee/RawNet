@@ -29,5 +29,7 @@ model:
   nb_conv_filt: [[128, 128], [256, 256], [256, 256], 256]
   nb_dense_node: [128]
   c_alpha: 0.5
+  nb_gru_node: [1024]
+  req_drop: 0.3
   
 

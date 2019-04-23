@@ -280,14 +280,12 @@ if __name__ == '__main__':
 			model.save_weights(save_dir +  'models_pretrn/%d-%.4f.h5'%(epoch, eer))
 	f_eer.close()
 	
-	
-	
 	#======================================================================#
 	#==Train RawNet========================================================#
 	#======================================================================#
 	model, m_name = get_model(argDic = parser['model'])
 	model_pred = Model(inputs=model.get_layer('input_RawNet').input, outputs=model.get_layer('code_RawNet').output)
-	model.load_weights(save_dir+'best_model_on_validation.h5', by_name = True)
+	model.load_weights(save_dir+'models_pretrn/best_model_on_validation.h5', by_name = True)
 
 
 	with open(save_dir + 'summary_RawNet.txt' ,'w+') as f_summary:
@@ -304,14 +302,14 @@ if __name__ == '__main__':
 	if bool(parser['mg']):
 		model_mg = multi_gpu_model(model, gpus=parser['nb_gpu'])
 		model_mg.compile(optimizer = optimizer,
-			loss = {'s_bs_loss':simple_loss,
-					'c_loss':zero_loss},
-			loss_weights = {'s_bs_loss':1, 'c_loss':parser['c_lambda']},
+			loss = {'gru_s_bs_loss':simple_loss,
+					'gru_c_loss':zero_loss},
+			loss_weights = {'gru_s_bs_loss':1, 'gru_c_loss':parser['c_lambda']},
 			metrics=['accuracy'])
 	model.compile(optimizer = optimizer,
-			loss = {'s_bs_loss':simple_loss,
-					'c_loss':zero_loss},
-			loss_weights = {'s_bs_loss':1, 'c_loss': parser['c_lambda']},
+			loss = {'gru_s_bs_loss':simple_loss,
+					'gru_c_loss':zero_loss},
+			loss_weights = {'gru_s_bs_loss':1, 'gru_c_loss': parser['c_lambda']},
 		metrics=['accuracy'])
 	
 	best_val_eer = '99.'
