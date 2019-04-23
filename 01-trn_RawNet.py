@@ -169,7 +169,6 @@ if __name__ == '__main__':
 		f_json.write(model_json)
 	'''
 
-	"""
 	if not os.path.exists(save_dir  + 'results_pretrn/'):
 		os.makedirs(save_dir + 'results_pretrn/')
 	if not os.path.exists(save_dir  + 'models_pretrn/'):
@@ -280,7 +279,6 @@ if __name__ == '__main__':
 		if not bool(parser['save_best_only']):
 			model.save_weights(save_dir +  'models_pretrn/%d-%.4f.h5'%(epoch, eer))
 	f_eer.close()
-	"""
 	
 	#======================================================================#
 	#==Train RawNet========================================================#
