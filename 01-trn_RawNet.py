@@ -29,6 +29,15 @@ def zero_loss(y_true, y_pred):
 	return 0.5 * K.sum(y_pred, axis=0)
 
 def compose_spkFeat_dic(lines, model, f_desc_dic, base_dir):
+	'''
+	Extracts speaker embeddings from a given model
+	=====
+
+	lines: (list) A list of strings that indicate each utterance
+	model: (keras model) DNN that extracts speaker embeddings,
+		output layer should be rmoved(model_pred)
+	f_desc_dic: (dictionary) A dictionary of file objects
+	'''
 	dic_spkFeat = {}
 	for line in tqdm(lines, desc='extracting spk feats'):
 		k, f, p = line.strip().split(' ')
@@ -38,14 +47,19 @@ def compose_spkFeat_dic(lines, model, f_desc_dic, base_dir):
 			f_desc_dic[f] = open(f_tmp, 'rb')
 
 		f_desc_dic[f].seek(p)
-		l = struct.unpack('i', f_desc_dic[f].read(4))[0]
-		utt = np.asarray(struct.unpack('%df'%l, f_desc_dic[f].read(l * 4)), dtype=np.float32)
-		spkFeat = model.predict(utt.reshape(1,-1,1))[0]
+		l = struct.unpack('i', f_desc_dic[f].read(4))[0]# number of samples of each utterance
+		utt = np.asarray(struct.unpack('%df'%l, f_desc_dic[f].read(l * 4)), dtype=np.float32)# read binary utterance 
+		spkFeat = model.predict(utt.reshape(1,-1,1))[0]# extract speaker embedding from utt
 		dic_spkFeat[k] = spkFeat
 
 	return dic_spkFeat
 
 def make_spkdic(lines):
+	'''
+	Returns a dictionary where
+		key: (str) speaker name
+		value: (int) unique integer for each speaker
+	'''
 	idx = 0
 	dic_spk = {}
 	list_spk = []
@@ -60,7 +74,10 @@ def make_spkdic(lines):
 
 def compose_batch(lines, f_desc_dic, dic_spk, nb_samp, base_dir):
 	'''
-	designed to read pre-emphasized floats!
+	Compose one mini-batch using utterances in `lines'
+
+	nb_samp: (int) duration of utterance at train phase.
+		Fixed for each mini-batch for mini-batch training.
 	'''
 	batch = []
 	ans = []
@@ -85,6 +102,9 @@ def compose_batch(lines, f_desc_dic, dic_spk, nb_samp, base_dir):
 	return (np.asarray(batch, dtype=np.float32).reshape(len(lines), -1, 1), np.asarray(ans))
 
 def process_epoch(lines, q, batch_size, nb_samp, dic_spk, base_dir): 
+	'''
+	Wrapper function for processing mini-batches for the train set once.
+	'''
 	f_desc_dic = {}
 	nb_batch = int(len(lines) / batch_size)
 	for i in range(nb_batch):
@@ -108,6 +128,9 @@ def process_epoch(lines, q, batch_size, nb_samp, dic_spk, base_dir):
 #======================================================================#
 #======================================================================#
 if __name__ == '__main__':
+	#======================================================================#
+	#==Yaml load===========================================================#
+	#======================================================================#
 	_abspath = os.path.abspath(__file__)
 	dir_yaml = os.path.splitext(_abspath)[0] + '.yaml'
 	with open(dir_yaml, 'r') as f_yaml:
