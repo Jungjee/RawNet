@@ -5,17 +5,16 @@ opt_decay: 0.0001
 amsgrad: 1
 lr: 0.001
 
-dev_scp: scp/dev_wav_pe.scp
-eval_scp: scp/eval_wav_pe.scp
-
+dev_scp: /DB/VoxCeleb1/feature/waveform/dev_wav_pe.scp
+eval_scp: /DB/VoxCeleb1/feature/waveform/eval_wav_pe.scp
 epoch: 1000
 save_dir: /exp/model/networks/
 name: reproduce_bvec
 nb_batch_per_epoch: 1000
-trials: /DB/voxceleb1_test.txt
-val_trials: /DB/voxceleb1_val.txt
+trials: /DB/VoxCeleb1/voxceleb1_test.txt
+val_trials: /DB/VoxCeleb1/voxceleb1_val.txt
 
-gru_embeddings: /data/speaker_embeddigs_RawNet
+gru_embeddings: /exp/data/speaker_embeddings_RawNet
 
 model:
   nb_dense_node: [512, 512, 512, 512] 
