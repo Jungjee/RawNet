@@ -186,6 +186,7 @@ if __name__ == '__main__':
 	if not os.path.exists(save_dir  + 'models_bvec/'):
 		os.makedirs(save_dir + 'models_bvec/')
 	f_eer = open(save_dir + 'eers_bvec.txt', 'a', buffering=1)
+	best_val_eer = 99.
 	for epoch in tqdm(range(restart_epo, parser['epoch'])):
 		np.random.shuffle(dev_lines)
 		p = Thread(target = process_epoch_e2e, args = (dev_lines,
@@ -230,7 +231,9 @@ if __name__ == '__main__':
 		eer = brentq(lambda x: 1. - x - interp1d(fpr, tpr)(x), 0., 1.)
 		print('\nepoch: %d, val_eer: %f'%(int(epoch), eer))
 		f_eer.write('%d %f '%(epoch, eer))
-		model.save_weights(save_dir +  'models_bvec/%d-%.4f.h5'%(epoch, eer))
+		if float(eer) < best_val_eer:
+			best_val_eer = float(eer)
+			model.save_weights(save_dir +  'models_bvec/best_model_on_validation.h5')
 	
 		y = []
 		eval_enrol = []
@@ -249,4 +252,6 @@ if __name__ == '__main__':
 		eer = brentq(lambda x: 1. - x - interp1d(fpr, tpr)(x), 0., 1.)
 		print('\nepoch: %d, eer: %f'%(int(epoch), eer))
 		f_eer.write('%f\n'%(eer))
+		if not bool(parser['save_best_only']):
+			model.save_weights(save_dir +  'models_bvec/%d-%.4f.h5'%(epoch, eer))
 	f_eer.close()

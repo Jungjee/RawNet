@@ -15,6 +15,7 @@ trials: /DB/VoxCeleb1/voxceleb1_test.txt
 val_trials: /DB/VoxCeleb1/voxceleb1_val.txt
 
 gru_embeddings: /exp/data/speaker_embeddings_RawNet
+save_best_only: 1
 
 model:
   #nb_dense_node: [512, 512, 512, 512] 
