@@ -19,5 +19,6 @@ Other guidelines are currently being updated.
 Email jeewon.leo.jung@gmail.com for other details :-).
 
 Log
-- 2019.04.17.	: executing 01 script
+- 2019.04.17. : 01 script executing
 - 2019.04.24. : 01 script veryfied.
+- 2019.04.29. : 02 script executing 
