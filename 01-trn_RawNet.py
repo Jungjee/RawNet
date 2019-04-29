@@ -171,7 +171,6 @@ if __name__ == '__main__':
 	if not os.path.exists(save_dir):
 		os.makedirs(save_dir)
 
-	"""
 	with open(save_dir + 'summary_pretrn.txt' ,'w+') as f_summary:
 		model.summary(print_fn=lambda x: f_summary.write(x + '\n'))
 	
@@ -303,7 +302,6 @@ if __name__ == '__main__':
 		if not bool(parser['save_best_only']):
 			model.save_weights(save_dir +  'models_pretrn/%d-%.4f.h5'%(epoch, eer))
 	f_eer.close()
-	"""
 	
 	#======================================================================#
 	#==Train RawNet========================================================#
@@ -337,7 +335,6 @@ if __name__ == '__main__':
 			loss_weights = {'gru_s_bs_loss':1, 'gru_c_loss': parser['c_lambda']},
 		metrics=['accuracy'])
 	
-	"""
 	best_val_eer = 99.
 	for epoch in tqdm(range(parser['epoch'])):
 		np.random.shuffle(dev_lines)
@@ -424,8 +421,6 @@ if __name__ == '__main__':
 		if not bool(parser['save_best_only']):
 			model.save_weights(save_dir +  'models_RawNet/%d-%.4f.h5'%(epoch, eer))
 	f_eer.close()
-
-	"""
 
 	#======================================================================#
 	#==Extract RawNet Embeddings===========================================#
