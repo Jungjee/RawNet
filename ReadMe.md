@@ -2,7 +2,7 @@ This github project includes codes for reproducing experiments and DNN models us
 ===============================================================================================
 
 RawNet: Advanced end-to-end deep neural network using raw waveforms for text-independent speaker verification
-- Currently submitted to Interspeech2019 as a conference paper.
+- Currently accepted to Interspeech2019 as a conference paper.
 - arXiv pre-print is at https://arxiv.org/abs/1904.08104
 	
 
