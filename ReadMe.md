@@ -1,3 +1,6 @@
+(2019.10.14.)PyTorch based Scripts are going to be uploaded including VoxCeleb2 results!
+========================================================================================
+
 This github project includes codes for reproducing experiments and DNN models used in the paper
 ===============================================================================================
 
@@ -35,3 +38,4 @@ Log
 - 2019.04.24. : 01 script verified.
 - 2019.04.29. : 02 script executing 
 - 2019.04.29. : 02 script verified.
+- 2019.10.14. : short utterance preparation script added regarding ASRU 2019 paper.
