@@ -55,3 +55,4 @@ If you used the codes of this repository, please cite  [RawNet: Advanced end-to-
 - 2019.10.14. : short utterance preparation script added regarding ASRU 2019 paper.
 - 2019.10.22. : Previous scripts and data moved under "Keras".
 - 2019.10.22. : Add citation guidelines
+- 2019.10.22. : Initial commit of PyTorch scripts
