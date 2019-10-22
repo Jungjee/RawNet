@@ -1,4 +1,3 @@
-from comet_ml import Experiment
 from tqdm import tqdm
 from collections import OrderedDict
 from sklearn.metrics import roc_curve
@@ -13,9 +12,8 @@ import torch
 import torch.nn as nn
 from torch.utils import data
 
-from model_RawNet_12_h_bc import RawNet
+from model_RawNet import RawNet
 
-#def keras_lr_decay(step, decay = 0.0001):
 def keras_lr_decay(step, decay = 0.00005):
 	return 1./(1.+decay*step)
 	
@@ -33,10 +31,9 @@ def init_weights(m):
 			print('no weight',m)
 
 
-def train_model(model, device, db_gen, optimizer, experiment, epoch):
+def train_model(model, device, db_gen, optimizer, epoch):
 	negative_mask = torch.ones((parser['model']['nb_classes'], parser['model']['nb_classes']), dtype = torch.float32) - torch.eye(parser['model']['nb_classes'])
 	negative_mask = negative_mask.to(device, dtype=torch.float)
-	#print(negative_mask, 'nega mask')>>>checked
 
 	model.train()
 	with tqdm(total = len(db_gen), ncols = 70) as pbar:
@@ -44,7 +41,6 @@ def train_model(model, device, db_gen, optimizer, experiment, epoch):
 			if bool(parser['do_lr_decay']):
 				if parser['lr_decay'] == 'keras': lr_scheduler.step()
 					
-			#m_label = m_label.to(device)
 			m_batch = m_batch.to(device)
 			m_label, m_label2 = label[0].to(device, dtype=torch.long), label[1].to(device, dtype=torch.long)
 
@@ -55,21 +51,15 @@ def train_model(model, device, db_gen, optimizer, experiment, epoch):
 			else:
 				norm = torch.norm(model.fc2_gru.weight, dim=1, keepdim = True) / (5. ** 0.5)
 				normed_weight = torch.div(model.fc2_gru.weight, norm)
-			#print(norm)
-			#print('='*5)
-			#print(normed_weight)
 			inner = torch.mm(normed_weight, normed_weight.t())
 			bc_loss = torch.log(torch.exp((inner * negative_mask) ** 2.).mean())
 			cce_loss = criterion(output, m_label)
 			h_loss = h_loss.mean()
 
-			'''
 			if int(epoch) > 20:
 				loss = cce_loss + h_loss + (parser['bc_loss_weight']*bc_loss)
 			else:
-				loss = cce_loss# + h_loss # + (parser['bc_loss_weight']*bc_loss)
-			'''
-			loss = cce_loss
+				loss = cce_loss
 				
 
 			optimizer.zero_grad()
@@ -78,25 +68,13 @@ def train_model(model, device, db_gen, optimizer, experiment, epoch):
 			pbar.set_description('epoch%d,cce:%.3f,h:%.3f,bc:%.3f'%(epoch, cce_loss, h_loss, bc_loss))
 			pbar.update(1)
 			if idx_ct % 100 == 0:
-				experiment.log_metric('loss', loss)
-				experiment.log_metric('h_loss', h_loss)
-				experiment.log_metric('bc_loss', bc_loss)
-				experiment.log_metric('cce_loss', cce_loss)
 				for p in optimizer.param_groups:
 					lr_cur = p['lr']
 					print('lr_cur', lr_cur)
-					experiment.log_metric('lr', lr_cur)
 					break
-	'''
-	experiment.log_metric('loss', loss)
-	experiment.log_metric('h_loss', h_loss)
-	experiment.log_metric('bc_loss', bc_loss)
-	experiment.log_metric('cce_loss', cce_loss)
-	'''
 
 def evaluate_model(mode, model, db_gen, device, l_utt, save_dir, epoch, l_trial):
 	if mode not in ['val', 'eval']: raise ValueError('mode should be either "val" or "eval"')
-	#forward_mode = model.module.forward_mode if bool(parser['mg']) else model.forward_mode
 	model.eval()
 	with torch.set_grad_enabled(False):
 		#1st, extract speaker embeddings.
@@ -248,10 +226,6 @@ if __name__ == '__main__':
 	with open(dir_yaml, 'r') as f_yaml:
 		parser = yaml.load(f_yaml)
 	np.random.seed(parser['seed'])
-	experiment = Experiment(api_key="9CueLwB3ujfFlhdD9Z2VpKKaq",
-		project_name="RawNet_torch", workspace="jungjee",
-		disabled = bool(parser['comet_disable']))
-	experiment.set_name(parser['name'])
 	
 	#device setting
 	cuda = torch.cuda.is_available()
@@ -331,9 +305,6 @@ if __name__ == '__main__':
 		f_params.write('{}:\t{}\n'.format(k, v))
 	f_params.close()
 
-	#to comet server
-	experiment.log_parameters(parser)
-	experiment.log_parameters(parser['model'])
 
 	#define model
 	if bool(parser['mg']):
@@ -345,7 +316,6 @@ if __name__ == '__main__':
 		nb_params = sum([param.view(-1).size()[0] for param in model.parameters()])
 	model.apply(init_weights)
 	print('nb_params: {}'.format(nb_params))
-	experiment.log_parameter('nb_params', str(nb_params))
 
 	#set ojbective funtions
 	criterion = nn.CrossEntropyLoss()
@@ -384,34 +354,18 @@ if __name__ == '__main__':
 	if bool(parser['do_lr_decay']):
 		if parser['lr_decay'] == 'keras':
 			lr_scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda = lambda step: keras_lr_decay(step))
+
 	##########################################
 	#Train####################################
 	##########################################
 	best_eer = 99.
 	f_eer = open(save_dir + 'eers.txt', 'a', buffering = 1)
 	for epoch in tqdm(range(parser['epoch'])):
-		'''
-		if epoch == int(parser['pretrn_epoch']):
-			print('start main training')
-			if bool(parser['mg']):
-				assert model_1gpu.forward_mode == 'pre_trn'
-				model_1gpu.forward_mode = 'rawnet'
-				model_1gpu.load_state_dict(torch.load(save_dir+'models/best.pt'))
-				assert model.module.forward_mode == 'rawnet'
-			else:
-				assert model.forward_mode == 'pre_trn'
-				model.forward_mode = 'rawnet'
-				model.load_state_dict(torch.load(save_dir+'models/best.pt'))
-				assert model.forward_mode == 'rawnet'
-			f_eer.write('START RAWNET\n')
-		'''
-
 		#train phase
 		train_model(model = model,
 			device = device,
 			db_gen = devset_gen,
 			optimizer = optimizer,
-			experiment = experiment,
 			epoch = epoch)
 
 		#validation phase
@@ -423,7 +377,6 @@ if __name__ == '__main__':
 			save_dir = save_dir,
 			epoch = epoch,
 			l_trial = l_val_trial)
-		experiment.log_metric('val_eer', val_eer)
 		f_eer.write('epoch:%d,val_eer:%f\n'%(epoch, val_eer))
 
 		save_model_dict = model_1gpu.state_dict() if bool(parser['mg']) else model.state_dict()
@@ -431,7 +384,6 @@ if __name__ == '__main__':
 		if float(val_eer) < best_eer:
 			print('New best validation EER: %f'%float(val_eer))
 			best_eer = float(val_eer)
-			experiment.log_metric('best_val_eer', val_eer)
 			#save best model
 			torch.save(save_model_dict, save_dir +  'models/best.pt')
 			torch.save(optimizer.state_dict(), save_dir + 'models/best_opt.pt')
@@ -440,47 +392,16 @@ if __name__ == '__main__':
 			torch.save(save_model_dict, save_dir +  'models/%d-%.6f.pt'%(epoch, val_eer))
 			torch.save(optimizer.state_dict(), save_dir + 'models/opt_%d-%.6f.pt'%(epoch, val_eer))
 
-		#evaluate every 10 epochs.
-		if epoch % 1 == 0:#tmp'''
-			eval_eer = evaluate_model(mode = 'eval',
-				model = model,
-				db_gen = evalset_gen, 
-				device = device,
-				l_utt = l_eval,
-				save_dir = save_dir,
-				epoch = epoch,
-				l_trial = l_eval_trial)
-			experiment.log_metric('eval_eer', eval_eer)
-			f_eer.write('epoch:%d,Eval eer:%f\n'%(epoch, eval_eer))
+		eval_eer = evaluate_model(mode = 'eval',
+			model = model,
+			db_gen = evalset_gen, 
+			device = device,
+			l_utt = l_eval,
+			save_dir = save_dir,
+			epoch = epoch,
+			l_trial = l_eval_trial)
+		f_eer.write('epoch:%d,Eval eer:%f\n'%(epoch, eval_eer))
 
-		'''
-		#evaluate best pretrn_model
-		if epoch == int(parser['pretrn_epoch'])-1:
-			assert model.forward_mode == 'pre_trn'
-			model.load_state_dict(torch.load(save_dir+'models/best.pt'))
-			eval_eer = evaluate_model(mode = 'eval',
-				model = model,
-				db_gen = evalset_gen, 
-				device = device,
-				l_utt = l_eval,
-				save_dir = save_dir,
-				epoch = epoch,
-				l_trial = l_eval_trial)
-			experiment.log_metric('eval_eer', eval_eer)
-			f_eer.write('Best pretrn model:%f\n'%(eval_eer))
-		'''
-	#evaluate best RawNet model
-	model.load_state_dict(torch.load(save_dir+'models/best.pt'))
-	eval_eer = evaluate_model(mode = 'eval',
-		model = model,
-		db_gen = evalset_gen, 
-		device = device,
-		l_utt = l_eval,
-		save_dir = save_dir,
-		epoch = epoch,
-		l_trial = l_eval_trial)
-	experiment.log_metric('eval_eer', eval_eer)
-	f_eer.write('Best RawNet model:%f\n'%(eval_eer))
 	f_eer.close()
 
 

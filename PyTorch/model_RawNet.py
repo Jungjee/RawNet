@@ -8,7 +8,6 @@ from collections import OrderedDict
 from torch.nn.parameter import Parameter
 
 
-
 class Residual_block(nn.Module):
 	def __init__(self, nb_filts, first = False):
 		super(Residual_block, self).__init__()
@@ -65,9 +64,7 @@ class Residual_block(nn.Module):
 class RawNet(nn.Module):
 	def __init__(self, d_args, device):
 		super(RawNet, self).__init__()
-		#self.pre_trn = bool(d_args['pre_trn'])
 		self.negative_k = d_args['negative_k']
-		#self.forward_mode = 'pre_trn' if self.pre_trn else 'rawnet'
 		self.first_conv = nn.Conv1d(in_channels = d_args['in_channels'],
 			out_channels = d_args['filts'][0],#128
 			kernel_size = d_args['first_conv'],#3
@@ -82,27 +79,6 @@ class RawNet(nn.Module):
 			first = True)
 		self.block1 = self._make_layer(nb_blocks = d_args['blocks'][1],
 			nb_filts = d_args['filts'][2])
-
-		'''
-		if self.pre_trn:
-			self.block2 = Residual_block(nb_filts = d_args['filts'][3])
-			self.last_bn1 = nn.BatchNorm1d(num_features = d_args['filts'][3][-1])
-			self.last_conv = nn.Conv1d(in_channels = d_args['filts'][3][1],
-				out_channels = d_args['filts'][3][1],
-				kernel_size = 1,
-				padding = 0,
-				stride = 1)
-			self.last_bn2 = nn.BatchNorm1d(num_features = d_args['filts'][3][-1])
-			self.dropout = nn.Dropout(0.5)
-			self.global_avgpool = nn.AdaptiveAvgPool1d((1))
-
-			self.fc1 = nn.Linear(in_features = d_args['filts'][-1][-1],
-				out_features = d_args['nb_fc_node'])
-			self.fc1_bn = nn.BatchNorm1d(num_features = d_args['nb_fc_node'])
-			self.fc2 = nn.Linear(in_features = d_args['nb_fc_node'],
-				out_features = d_args['nb_classes'],
-				bias = True)
-		'''
 
 		self.bn_before_gru = nn.BatchNorm1d(num_features = d_args['filts'][2][-1])
 		self.gru = nn.GRU(input_size = d_args['filts'][2][-1],
@@ -123,48 +99,6 @@ class RawNet(nn.Module):
 		x = self.block0(x)
 		x = self.block1(x)
 
-		'''
-		if pre_trn:
-			x = self.block2(x)
-			x = self.last_bn1(x)
-			x = self.lrelu_keras(x)
-			x = self.last_conv(x)
-			x = self.last_bn2(x)
-			x = self.lrelu_keras(x)
-			
-			x = self.dropout(x)
-			x_avg = self.global_avgpool(x)
-			channel_dim = x_avg.size(1)
-			x = x_avg.view(-1, channel_dim)
-			x = self.fc1(x)
-			x = self.fc1_bn(x)
-			code = self.lrelu_keras(x)
-			out = self.fc2(code)
-			#between-class loss
-			norm = torch.norm(self.fc2.weight, dim=1, keepdim=True) / 5.
-			normed_weight = torch.div(self.fc2.weight, norm) 
-			inner = torch.mm(normed_weight, normed_weight.t())         
-			negative_mask = self.negative_mask.to(inner.device, dtype=torch.float)
-			#bc_loss = ((inner * self.negative_mask)**2.).mean()
-			bc_loss = ((inner * negative_mask)**2.).mean()
-		else:
-			x = self.bn_before_gru(x)
-			x = self.lrelu_keras(x)
-			x = x.permute(0, 2, 1)#(batch, filt, time) >> (batch, time, filt)
-			x, _ = self.gru(x)
-			x = x[:,-1,:]
-			x = self.fc1_gru(x)
-			code = self.lrelu_keras(x)
-			out = self.fc2_gru(code)
-			#between-class loss
-			norm = torch.norm(self.fc2_gru.weight, dim=1, keepdim=True) / 5.
-			normed_weight = torch.div(self.fc2_gru.weight, norm) 
-			inner = torch.mm(normed_weight, normed_weight.t())         
-			negative_mask = self.negative_mask.to(inner.device, dtype=torch.float)
-			#self.negative_mask = self.negative_mask.to(inner.device, dtype=torch.float)
-			bc_loss = ((inner * negative_mask)**2.).mean()
-		'''
-
 		x = self.bn_before_gru(x)
 		x = self.lrelu_keras(x)
 		x = x.permute(0, 2, 1)#(batch, filt, time) >> (batch, time, filt)
@@ -172,11 +106,7 @@ class RawNet(nn.Module):
 		x = x[:,-1,:]
 		code = self.fc1_gru(x)
 		if is_test: return code
-		'''
-		x = self.fc1_gru(x)
-		x = self.bn_after_fc(x)
-		code = self.lrelu_keras(x)
-		'''
+
 		code_norm = code.norm(p=2,dim=1, keepdim=True) / 10.
 		code = torch.div(code, code_norm)
 		out = self.fc2_gru(code)
@@ -192,7 +122,6 @@ class RawNet(nn.Module):
 		hard_negatives = F.relu(hard_negatives, inplace=True)
 		trg_score = cos_target*-1.
 		h_loss = torch.log(1.+torch.exp(hard_negatives+trg_score).sum(dim=1))
-		#return out, h_loss #original
 		return out, h_loss
 
 	def _make_layer(self, nb_blocks, nb_filts, first = False):
