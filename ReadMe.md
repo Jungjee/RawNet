@@ -1,5 +1,8 @@
-(2019.10.14.)PyTorch based Scripts are going to be uploaded including VoxCeleb2 results!
+(2019.10.22.)PyTorch based Scripts are going to be uploaded including VoxCeleb2 results!
 ========================================================================================
+
+Scripts and data using Keras moved to folder "Keras"
+====================================================
 
 This github project includes codes for reproducing experiments and DNN models used in the paper
 ===============================================================================================
@@ -39,3 +42,4 @@ Log
 - 2019.04.29. : 02 script executing 
 - 2019.04.29. : 02 script verified.
 - 2019.10.14. : short utterance preparation script added regarding ASRU 2019 paper.
+- 2019.10.22. : Previous scripts and data moved under "Keras".
