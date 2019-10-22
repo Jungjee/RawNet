@@ -25,6 +25,9 @@ In our paper, training a b-vector classifier using these embeddings yielded an E
 
 For other back-end researches on speaker verification, using these speaker embeddings might be a good start :)
 
+# PyTorch implementation of RawNet
+Currently under modification.
+Modified version trained on VoxCeleb2 dataset. Demonstrats EER of 3.66 % with VoxCeleb1 evaluation set. 
 
 # Other guidelines are currently being updated.
 Email jeewon.leo.jung@gmail.com for other details :-).
