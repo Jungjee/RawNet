@@ -1,11 +1,7 @@
-(2019.10.22.)PyTorch based Scripts are going to be uploaded including VoxCeleb2 results!
-========================================================================================
+# (2019.10.22.)PyTorch based Scripts are going to be uploaded including VoxCeleb2 results!
+## Scripts and data using Keras moved to folder "Keras"
 
-Scripts and data using Keras moved to folder "Keras"
-====================================================
-
-This github project includes codes for reproducing experiments and DNN models used in the paper
-===============================================================================================
+# This github project includes codes for reproducing experiments and DNN models used in the paper
 
 RawNet: Advanced end-to-end deep neural network using raw waveforms for text-independent speaker verification
 - Currently accepted to Interspeech2019 as a conference paper.
@@ -32,9 +28,23 @@ In our paper, training a b-vector classifier using these embeddings yielded an E
 For other back-end researches on speaker verification, using these speaker embeddings might be a good start :)
 
 
-Other guidelines are currently being updated.
----------------------------------------------
+# Other guidelines are currently being updated.
 Email jeewon.leo.jung@gmail.com for other details :-).
+
+# Citation
+
+If you used the codes of this repository, please cite  [RawNet: Advanced end-to-end deep neural network using raw waveforms for text-independent speaker verification]( https://isca-speech.org/archive/Interspeech_2019/pdfs/1982.pdf ) 
+
+```
+@article{jung2018avoiding,
+  title={RawNet: Advanced end-to-end deep neural network using raw waveforms for text-independent speaker verification},
+  author={Jung, Jee-weon and Heo, Hee-soo and Kim, ju-ho and Shim, Hye-jin and Yu, Ha-jin},
+  journal={Proc. Interspeech 2019},
+  pages={1268--1272},
+  year={2019}
+}
+```
+
 
 Log
 - 2019.04.17. : 01 script executing
