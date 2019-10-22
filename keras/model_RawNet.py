@@ -21,20 +21,17 @@ def zero_loss(y_true, y_pred):
 	return 0.5 * K.sum(y_pred, axis=0)
 
 class spk_basis_loss(Dense):
-	def __init__(self, units, with_H = False, s = 5., negative_k = 100, num_batch = 100,
-				 kernel_initializer='glorot_uniform',
-				 kernel_regularizer=None,
-				 kernel_constraint=None,
-				 **kwargs):
+	def __init__(self, units,
+				s = 5.,
+				kernel_initializer='glorot_uniform',
+				kernel_regularizer=None,
+				kernel_constraint=None,
+				**kwargs):
 		if 'input_shape' not in kwargs and 'input_dim' in kwargs:
 			kwargs['input_shape'] = (kwargs.pop('input_dim'),)
 		super(Dense, self).__init__(**kwargs)
 		self.units = units
-		
-		self.with_H = with_H
 		self.s = s
-		self.negative_k = negative_k
-		self.num_batch = num_batch
 		
 		self.kernel_initializer = initializers.get(kernel_initializer)
 		self.kernel_regularizer = regularizers.get(kernel_regularizer)
@@ -69,40 +66,18 @@ class spk_basis_loss(Dense):
 		inputs_norm = inputs_x / input_length
 		kernel_norm = self.kernel / kernel_length
 		
-		#label_onehot = tf.one_hot(tf.reshape(inputs_y, [-1]), self.units)
 		label_onehot = inputs_y
-		# shape = [#batch_sample, #spk]
-		
 		negative_mask = tf.fill([self.units, self.units], 1.) - tf.eye(self.units)
 		# shape = [#spk, #spk]
 		
-		negative_mask2 = tf.fill([self.num_batch, self.units], 1.) - label_onehot
-		# shape = [#batch_sample, #spk]
-		
 		loss_BS = K.mean(tf.matmul(kernel_norm, kernel_norm,
-                     adjoint_a = True # transpose second matrix
-                     ) * negative_mask  ) 
-					 
-		if self.with_H:		
-			cos_output = K.dot(inputs_norm, kernel_norm)	
-			cos_target = K.sum(cos_output * label_onehot, axis = 1, keepdims = True)
+			adjoint_a = True # transpose second matrix
+			) * negative_mask  ) 
 			
-			
-			cos_diff = K.exp(cos_output - cos_target) * negative_mask2
-			hard_negatives, _ = tf.nn.top_k(cos_diff, k=self.negative_k,sorted=False)
-			
-			loss_H = K.mean(K.log(1. + hard_negatives), axis = 1)
-			
-			final_loss = loss_H + loss_BS
-		else:
-			
-			inner_output = K.dot(inputs_x, self.kernel)
-			softmax_output = softmax(inner_output)
-			#loss_s = K.sparse_categorical_crossentropy(inputs_y, softmax_output)
-			loss_s = K.categorical_crossentropy(inputs_y, softmax_output)
-			
-			final_loss = loss_s + loss_BS
-		
+		inner_output = K.dot(inputs_x, self.kernel)
+		softmax_output = softmax(inner_output)
+		loss_s = K.categorical_crossentropy(inputs_y, softmax_output)
+		final_loss = loss_s + loss_BS
 		
 		return final_loss
 		
@@ -124,22 +99,15 @@ class CenterLossLayer(Layer):
 				   shape=(self.nb_center, self.dim_embd),
 				   initializer='uniform',
 				   trainable=False)
-		# self.counter = self.add_weight(name='counter',
-		#			shape=(1,),
-		#			initializer='zeros',
-		#			trainable=False)  # just for debugging
 		super().build(input_shape)
 
 	def call(self, x, mask=None):
 
-		# x[0] is Nx2, x[1] is Nx10 onehot, self.centers is 10x2
 		delta_centers = K.dot(K.transpose(x[1]), (K.dot(x[1], self.centers) - x[0]))  # 10x2
 		center_counts = K.sum(K.transpose(x[1]), axis=1, keepdims=True) + 1  # 10x1
 		delta_centers /= center_counts
 		new_centers = self.centers - self.alpha * delta_centers
 		self.add_update((self.centers, new_centers), x)
-
-		# self.add_update((self.counter, self.counter + 1), x)
 
 		self.result = x[0] - K.dot(x[1], self.centers)
 		self.result = K.sum(self.result ** 2, axis=1, keepdims=True) #/ K.dot(x[1], center_counts)
@@ -175,7 +143,7 @@ def residual_block_conv(input_tensor, filters = [], initializer = None, regulari
 
 
 def get_model(argDic):
-	inputs = Input(shape = (None, 1))
+	inputs = Input(shape = (None, 1), name='input_RawNet')
 	c_input = Input(shape = (argDic['nb_spk'],))
 
 	#strided Conv
@@ -221,7 +189,7 @@ def get_model(argDic):
 
 	for i in range(len(argDic['nb_dense_node'])):
 		if i == len(argDic['nb_dense_node']) -1:
-			name = 'gru_code'
+			name = 'code_RawNet'
 		else:
 			name = 'gru_dense_act_%d'%(i+1)
 		x = Dense(argDic['nb_dense_node'][i],
@@ -231,12 +199,9 @@ def get_model(argDic):
 		x = BatchNormalization(axis=-1, name='gru_BN_%d'%i)(x)
 		x = LeakyReLU(name = name)(x)
 	
-	s_bs_out = spk_basis_loss(with_H = bool(argDic['use_H_loss']),
-			units = argDic['nb_spk'],
-			negative_k = argDic['bs_nb_k'],
+	s_bs_out = spk_basis_loss(units = argDic['nb_spk'],
 			kernel_initializer = argDic['initializer'],
 			kernel_regularizer = regularizers.l2(argDic['wd']),
-			num_batch = argDic['batch_size'],
 			name = 'gru_s_bs_loss')([x, c_input])
 
 	c_out = CenterLossLayer(alpha = argDic['c_alpha'],
@@ -244,12 +209,6 @@ def get_model(argDic):
 			dim_embd = argDic['nb_dense_node'][-1],
 			name='gru_c_loss')([x, c_input])
 	return [Model(inputs=[inputs, c_input], output=[s_bs_out, c_out]), m_name]
-
-
-
-
-
-
 
 
 
