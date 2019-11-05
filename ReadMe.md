@@ -26,8 +26,15 @@ In our paper, training a b-vector classifier using these embeddings yielded an E
 For other back-end researches on speaker verification, using these speaker embeddings might be a good start :)
 
 # PyTorch implementation of RawNet
-Currently under modification.
-Modified version trained on VoxCeleb2 dataset. Demonstrats EER of 3.66 % with VoxCeleb1 evaluation set. 
+
+Additional baseline using VoxCeleb2 for training and VoxCeleb1 for validation and evaluation is updated in 'PyTorch' folder. 
+It shows an EER of 3.6% on VoxCeleb1 evaluation.
+To run the PyTorch baseline,  
+	1. Script 'PyTorch/lunch_ngc.sh' is used to create a virtual environment for DNN training using NGC(nvidia gpu cloud).
+	2. Run train_RawNet.py (look yaml file for parameter configurations)
+
+~~Currently under modification.~~
+~~Modified version trained on VoxCeleb2 dataset. Demonstrats EER of 3.66 % with VoxCeleb1 evaluation set. ~~
 
 # Other guidelines are currently being updated.
 Email jeewon.leo.jung@gmail.com for other details :-).
