@@ -33,8 +33,6 @@ To run the PyTorch baseline,
 	1. Script 'PyTorch/lunch_ngc.sh' is used to create a virtual environment for DNN training using NGC(nvidia gpu cloud).
 	2. Run train_RawNet.py (look yaml file for parameter configurations)
 
-~~Currently under modification.~~
-~~Modified version trained on VoxCeleb2 dataset. Demonstrats EER of 3.66 % with VoxCeleb1 evaluation set. ~~
 
 # Other guidelines are currently being updated.
 Email jeewon.leo.jung@gmail.com for other details :-).
