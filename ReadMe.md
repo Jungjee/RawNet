@@ -30,6 +30,8 @@ For other back-end researches on speaker verification, using these speaker embed
 Additional baseline using VoxCeleb2 for training and VoxCeleb1 for validation and evaluation is updated in 'PyTorch' folder. 
 It shows an EER of 3.6% on VoxCeleb1 evaluation.
 To run the PyTorch baseline,  
+
+
 	1. Script 'PyTorch/lunch_ngc.sh' is used to create a virtual environment for DNN training using NGC(nvidia gpu cloud).
 	2. Run train_RawNet.py (look yaml file for parameter configurations)
 
