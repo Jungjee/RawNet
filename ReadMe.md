@@ -44,7 +44,7 @@ Email jeewon.leo.jung@gmail.com for other details :-).
 If you used the codes of this repository, please cite  [RawNet: Advanced end-to-end deep neural network using raw waveforms for text-independent speaker verification]( https://isca-speech.org/archive/Interspeech_2019/pdfs/1982.pdf ) 
 
 ```
-@article{jung2018avoiding,
+@article{jung2019RawNet,
   title={RawNet: Advanced end-to-end deep neural network using raw waveforms for text-independent speaker verification},
   author={Jung, Jee-weon and Heo, Hee-soo and Kim, ju-ho and Shim, Hye-jin and Yu, Ha-jin},
   journal={Proc. Interspeech 2019},
@@ -56,10 +56,11 @@ If you used the codes of this repository, please cite  [RawNet: Advanced end-to-
 
 # Log
 - 2019.04.17. : 01 script executing
-- 2019.04.24. : 01 script verified.
+- 2019.04.24. : 01 script verified
 - 2019.04.29. : 02 script executing 
-- 2019.04.29. : 02 script verified.
-- 2019.10.14. : short utterance preparation script added regarding ASRU 2019 paper.
-- 2019.10.22. : Previous scripts and data moved under "Keras".
+- 2019.04.29. : 02 script verified
+- 2019.10.14. : short utterance preparation script added regarding ASRU 2019 paper
+- 2019.10.22. : Previous scripts and data moved under "Keras"
 - 2019.10.22. : Add citation guidelines
 - 2019.10.22. : Initial commit of PyTorch scripts
+- 2019.11.05. : PyTorch baseline on VoxCeleb2 
