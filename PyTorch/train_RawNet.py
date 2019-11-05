@@ -32,46 +32,39 @@ def init_weights(m):
 
 
 def train_model(model, device, db_gen, optimizer, epoch):
-	negative_mask = torch.ones((parser['model']['nb_classes'], parser['model']['nb_classes']), dtype = torch.float32) - torch.eye(parser['model']['nb_classes'])
-	negative_mask = negative_mask.to(device, dtype=torch.float)
-
 	model.train()
 	with tqdm(total = len(db_gen), ncols = 70) as pbar:
-		for idx_ct, (m_batch, label) in enumerate(db_gen):
+		for idx_ct, (m_batch, m_label) in enumerate(db_gen):
 			if bool(parser['do_lr_decay']):
 				if parser['lr_decay'] == 'keras': lr_scheduler.step()
 					
 			m_batch = m_batch.to(device)
-			m_label, m_label2 = label[0].to(device, dtype=torch.long), label[1].to(device, dtype=torch.long)
+			m_label= m_label.to(device)
 
-			output, h_loss = model(m_batch, m_label, m_label2) #code, ring loss, output
+			output = model(m_batch, m_label) #output
+			'''
+			#for future updates including bc_loss and h_loss
 			if bool(parser['mg']):
 				norm = torch.norm(model.module.fc2_gru.weight, dim=1, keepdim = True) / (5. ** 0.5)
 				normed_weight = torch.div(model.module.fc2_gru.weight, norm)
 			else:
 				norm = torch.norm(model.fc2_gru.weight, dim=1, keepdim = True) / (5. ** 0.5)
 				normed_weight = torch.div(model.fc2_gru.weight, norm)
-			inner = torch.mm(normed_weight, normed_weight.t())
-			bc_loss = torch.log(torch.exp((inner * negative_mask) ** 2.).mean())
+			'''
 			cce_loss = criterion(output, m_label)
-			h_loss = h_loss.mean()
-
-			if int(epoch) > 20:
-				loss = cce_loss + h_loss + (parser['bc_loss_weight']*bc_loss)
-			else:
-				loss = cce_loss
-				
+			# bc_loss, h_loss currently removed.
+			loss = cce_loss
 
 			optimizer.zero_grad()
 			loss.backward()
 			optimizer.step()
-			pbar.set_description('epoch%d,cce:%.3f,h:%.3f,bc:%.3f'%(epoch, cce_loss, h_loss, bc_loss))
-			pbar.update(1)
 			if idx_ct % 100 == 0:
 				for p in optimizer.param_groups:
 					lr_cur = p['lr']
 					print('lr_cur', lr_cur)
 					break
+			pbar.set_description('epoch%d,cce:%.3f, cur_lr: .6f'%(epoch, cce_loss,lr_cur))
+			pbar.update(1)
 
 def evaluate_model(mode, model, db_gen, device, l_utt, save_dir, epoch, l_trial):
 	if mode not in ['val', 'eval']: raise ValueError('mode should be either "val" or "eval"')
@@ -145,12 +138,15 @@ def get_label_dic_Voxceleb(l_utt):
 			idx_counter += 1 
 	return d_label
 
-class Dataset_VoxCeleb_hbc(data.Dataset):
+class Dataset_VoxCeleb2(data.Dataset):
 	def __init__(self, list_IDs, base_dir, nb_time = 0, labels = {}, cut = True, return_label = True, pre_emp = True):
 		'''
 		self.list_IDs	: list of strings (each string: utt key)
 		self.labels		: dictionary (key: utt key, value: label integer)
 		self.nb_time	: integer, the number of timesteps for each mini-batch
+		cut				: (boolean) adjust utterance duration for mini-batch construction
+		return_label	: (boolean) 
+		pre_emp			: (boolean) do pre-emphasis with coefficient = 0.97
 		'''
 		self.list_IDs = list_IDs
 		self.nb_time = nb_time
@@ -179,16 +175,15 @@ class Dataset_VoxCeleb_hbc(data.Dataset):
 				X = np.tile(X, (1, nb_dup))[:, :self.nb_time]
 			else:
 				X = X
-		if self.return_label:
-			y = self.labels[ID.split('/')[0]]
-			y2 = list(range(len(self.labels)))
-			del y2[y]
-			y2 = np.asarray(y2, dtype = np.int32)
-			return X, [y, y2] 
-		else:
+		if not self.return_label:
 			return X
+		y = self.labels[ID.split('/')[0]]
+		return X, y
 
 	def _pre_emphasis(self, x):
+		'''
+		Pre-emphasis for single channel input
+		'''
 		return np.asarray(x[:,1:] - 0.97 * x[:, :-1], dtype=np.float32) 
 
 def make_validation_trial(l_utt, nb_trial, dir_val_trial):
@@ -203,7 +198,7 @@ def make_validation_trial(l_utt, nb_trial, dir_val_trial):
 		d_spk_utt[spk].append(utt)
 
 	l_spk = list(d_spk_utt.keys())
-	print('nb_spk: %d'%len(l_spk))
+	#print('nb_spk: %d'%len(l_spk))
 	#compose trg trials
 	selected_spks = np.random.choice(l_spk, size=nb_trg_trl, replace=True) 
 	for spk in selected_spks:
@@ -230,13 +225,13 @@ if __name__ == '__main__':
 	#device setting
 	cuda = torch.cuda.is_available()
 	device = torch.device('cuda' if cuda else 'cpu')
+	print(device)
 
 	#get utt_lists & define labels
 	l_dev  = sorted(get_utt_list(parser['DB_vox2']+parser['dev_wav']))
 	l_val  = sorted(get_utt_list(parser['DB']+parser['val_wav']))
 	l_eval  = sorted(get_utt_list(parser['DB']+parser['eval_wav']))
 	d_label_vox2 = get_label_dic_Voxceleb(l_dev)
-	#d_label_vox1 = get_label_dic_Voxceleb(l_val)
 	parser['model']['nb_classes'] = len(list(d_label_vox2.keys()))
 
 	#def make_validation_trial(l_utt, nb_trial, dir_val_trial):
@@ -247,15 +242,18 @@ if __name__ == '__main__':
 	with open(parser['DB']+'veri_test.txt', 'r') as f:
 		l_eval_trial = f.readlines()
 
+	'''
+	# for debugging
 	if bool(parser['comet_disable']):
 		l_dev = l_dev[:2000]
 		l_val_trial = l_val_trial[:2000]
 		l_eval_trial = l_eval_trial[:2000]
 		l_eval = get_val_utts(l_eval_trial)
+	'''
 
 	#define dataset generators
 	l_val = get_val_utts(l_val_trial)
-	devset = Dataset_VoxCeleb_hbc(list_IDs = l_dev,
+	devset = Dataset_VoxCeleb2(list_IDs = l_dev,
 		labels = d_label_vox2,
 		nb_time = parser['nb_time'],
 		base_dir = parser['DB_vox2']+parser['dev_wav'])
@@ -264,8 +262,7 @@ if __name__ == '__main__':
 		shuffle = True,
 		drop_last = True,
 		num_workers = parser['nb_proc_db'])
-	#def __init__(self, list_IDs, nb_time = 0, base_dir, labels = {}, cut = True, return_label = True, pre_emp = True):
-	valset = Dataset_VoxCeleb_hbc(list_IDs = l_val,
+	valset = Dataset_VoxCeleb2(list_IDs = l_val,
 		return_label = False,
 		nb_time = parser['nb_time'],
 		base_dir = parser['DB']+parser['val_wav'])
@@ -274,7 +271,7 @@ if __name__ == '__main__':
 		shuffle = False,
 		drop_last = False,
 		num_workers = parser['nb_proc_db'])
-	evalset = Dataset_VoxCeleb_hbc(list_IDs = l_eval,
+	evalset = Dataset_VoxCeleb2(list_IDs = l_eval,
 		cut = False,
 		return_label = False,
 		base_dir = parser['DB']+parser['eval_wav'])
@@ -294,7 +291,6 @@ if __name__ == '__main__':
 		os.makedirs(save_dir + 'models/')
 	
 	#log experiment parameters to local and comet_ml server
-	#to local
 	f_params = open(save_dir + 'f_params.txt', 'w')
 	for k, v in parser.items():
 		print(k, v)
@@ -304,7 +300,6 @@ if __name__ == '__main__':
 	for k, v in parser['model'].items():
 		f_params.write('{}:\t{}\n'.format(k, v))
 	f_params.close()
-
 
 	#define model
 	if bool(parser['mg']):
@@ -344,12 +339,13 @@ if __name__ == '__main__':
 			momentum = parser['opt_mom'],
 			weight_decay = parser['wd'],
 			nesterov = bool(parser['nesterov']))
-
 	elif parser['optimizer'].lower() == 'adam':
 		optimizer = torch.optim.Adam(params,
 			lr = parser['lr'],
 			weight_decay = parser['wd'],
 			amsgrad = bool(parser['amsgrad']))
+	else:
+		raise NotImplementedError('Add other optimizers if needed')
 
 	if bool(parser['do_lr_decay']):
 		if parser['lr_decay'] == 'keras':
@@ -401,7 +397,6 @@ if __name__ == '__main__':
 			epoch = epoch,
 			l_trial = l_eval_trial)
 		f_eer.write('epoch:%d,Eval eer:%f\n'%(epoch, eval_eer))
-
 	f_eer.close()
 
 
