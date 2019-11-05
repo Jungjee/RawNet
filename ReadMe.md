@@ -2,10 +2,9 @@
 
 This github project includes codes for reproducing experiments and DNN models used in the paper
 [RawNet: Advanced end-to-end deep neural network using raw waveforms for text-independent speaker verification]( https://isca-speech.org/archive/Interspeech_2019/pdfs/1982.pdf ) 
-which is accepted to Interspeech2019 as a conference paper.
+which was presented at Interspeech2019 as a conference paper.
 For following the implementation of the paper, refer to "Keras" folder. 
 "PyTorch" folder contains scripts using VoxCeleb2 dataset with a few modifications (baseline is uploaded currently).
-PyTorch scipts are still under modification. 
 	
 
 #  Reproduction of the system in the paper
@@ -15,7 +14,7 @@ PyTorch scipts are still under modification.
 		Cosine similarity metric with this embeddings demonstrate EER of 4.8 % on the VoxCeleb1 evaluation set. 
 		This file can also obtained by running script 'Keras/01-trn_RawNet.py' (minor differences can occur due to random seed).
 
-# For those who want to use RawNet embeddings.
+# To use pre-trained RawNet embeddings.
 
 'Keras/data/speaker_embeddings_RawNet_4.8eer' contains speaker embeddings extracted using RawNet. 
 Load it using python pickle library, a dictionary will be obtained. 
@@ -36,7 +35,7 @@ To run the PyTorch baseline,
 	2. Run train_RawNet.py (look yaml file for parameter configurations)
 
 
-# Other guidelines are currently being updated.
+###### Other guidelines are currently being updated.
 Email jeewon.leo.jung@gmail.com for other details :-).
 
 # Citation
