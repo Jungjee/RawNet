@@ -61,7 +61,7 @@ def train_model(model, device, db_gen, optimizer, epoch):
 			if idx_ct % 100 == 0:
 				for p in optimizer.param_groups:
 					lr_cur = p['lr']
-					print('lr_cur', lr_cur)
+					#print('lr_cur', lr_cur)
 					break
 			pbar.set_description('epoch%d,cce:%.3f, cur_lr:%.6f'%(epoch, cce_loss,float(lr_cur)))
 			pbar.update(1)
