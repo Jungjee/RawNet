@@ -63,7 +63,7 @@ def train_model(model, device, db_gen, optimizer, epoch):
 					lr_cur = p['lr']
 					print('lr_cur', lr_cur)
 					break
-			pbar.set_description('epoch%d,cce:%.3f, cur_lr: .6f'%(epoch, cce_loss,lr_cur))
+			pbar.set_description('epoch%d,cce:%.3f, cur_lr:%.6f'%(epoch, cce_loss,float(lr_cur)))
 			pbar.update(1)
 
 def evaluate_model(mode, model, db_gen, device, l_utt, save_dir, epoch, l_trial):
