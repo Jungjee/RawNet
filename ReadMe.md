@@ -1,6 +1,6 @@
 # Important notice
 We are preparing a new version of RawNet which will be submitted to Interspeech 2020 :)
-We are currently looking at an EER about 2%, training with VoxCeleb2. 
+We are currently looking at an EER about 2.4%, training with VoxCeleb2. 
 When RawNet2 is uploaded, both Keras and PyTorch implementation of current RawNet will be moved to folder 'RawNet'.
 Wait for further announcements :)!
 
