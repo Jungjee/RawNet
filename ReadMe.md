@@ -10,10 +10,14 @@ which is submitted to Interspeech2020 as a conference paper.
 
 	
 
-#  Using pre-trained model
+#  Evaluate pre-trained model
 
 1. Go into Pre-trained_model folder. 
-2. 
+2. Download extracted RawNet2 speaker embeddings for the VoxCeleb1 devset [Here]( https://www.dropbox.com/s/2y4k5rap8cztcrf/TTA_vox1_dev.pk?dl=0 )
+
+(Too big to upload in Github)
+3. Run 'evaluate_pretrained_RawNet2.py'
+
 
 
 
