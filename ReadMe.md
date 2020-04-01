@@ -8,9 +8,11 @@ This github project includes PyTorch implementation for reproducing experiments 
 [Improved RawNet with Filter-wise Re-scaling for\\ Text-independent Speaker Verification using Raw Waveforms]( https://isca-speech.org/archive/Interspeech_2019/pdfs/1982.pdf ) 
 which is submitted to Interspeech2020 as a conference paper.
 
-	
+# Environment Setting
 
-#  Evaluate pre-trained model
+We used Nvidia GPU Cloud for conducting our experiments. We used the 'nvcr.io/nvidia/pytorch:19.10-py3' image. Refer to 'launch_ngc.sh'. 
+
+#  Evaluate Pre-trained Model
 
 1. Go into Pre-trained_model folder. 
 2. Download extracted RawNet2 speaker embeddings for the VoxCeleb1 devset [Here]( https://www.dropbox.com/s/2y4k5rap8cztcrf/TTA_vox1_dev.pk?dl=0 )
@@ -21,8 +23,8 @@ which is submitted to Interspeech2020 as a conference paper.
 
 
 
-###### Other guidelines are currently being updated.
-Email jeewon.leo.jung@gmail.com for other details :-).
+
+##### Email jeewon.leo.jung@gmail.com for other details :-).
 
 # Citation
 
