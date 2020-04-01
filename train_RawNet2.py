@@ -95,12 +95,12 @@ def main():
     
     #define model
     if bool(args.mg):
-        model_1gpu = RawNet2(args.model, device)
+        model_1gpu = RawNet2(args.model)
         if args.load_model: model_1gpu.load_state_dict(torch.load(args.load_model_dir))
         nb_params = sum([param.view(-1).size()[0] for param in model_1gpu.parameters()])
         model = nn.DataParallel(model_1gpu).to(device)
     else:
-        model = RawNet2(args.model, device).to(device)
+        model = RawNet2(args.model).to(device)
         if args.load_model: model.load_state_dict(torch.load(args.load_model_dir))
         nb_params = sum([param.view(-1).size()[0] for param in model.parameters()])
     if not args.load_model: model.apply(init_weights)
