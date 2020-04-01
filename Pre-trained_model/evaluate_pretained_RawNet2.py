@@ -23,16 +23,6 @@ from model_RawNet2_original_code import RawNet
 def cos_sim(a,b):
     return np.dot(a,b) / (np.linalg.norm(a) * np.linalg.norm(b))
 
-def str2bool(v):
-    if isinstance(v, bool):
-       return v
-    if v.lower() in ('yes', 'true', 't', 'y', '1'):
-        return True
-    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
-        return False
-    else:
-        raise argparse.ArgumentTypeError('Boolean value expected.')
-
 class Dataset_embd(data.Dataset):
     def __init__(self, d_embd, trials='', nb_trials = 0, mode = 'trn'):
         self.d_embd = d_embd
@@ -79,34 +69,7 @@ def evaluate_init_model(db_gen):
 
 def main():
     parser = argparse.ArgumentParser()
-    #dir
-    parser.add_argument('-name', type = str, required = True)
-    parser.add_argument('-save_dir', type = str, default = '/exp/DNNs/')
     parser.add_argument('-embd_dir', type=str, default = '../spk_embd/')
-
-    #hyper-params
-    parser.add_argument('-bs', type = int, default = 120)
-    parser.add_argument('-lr', type = float, default = 0.001)
-    parser.add_argument('-wd', type = float, default = 0.0000)
-    parser.add_argument('-epoch', type = int, default = 80)
-    parser.add_argument('-optimizer', type = str, default = 'Adam') #'Adam'
-    parser.add_argument('-nb_worker', type = int, default = 2)
-    parser.add_argument('-seed', type = int, default = 1234) 
-    parser.add_argument('-opt_mom', type = float, default = 0.9) 
-    parser.add_argument('-am_margin', type = float, default = 0.35) 
-    parser.add_argument('-lr_decay', type = str, default = 'keras') 
-    parser.add_argument('-iter_per_epoch', type = int, default = 1000) 
-    parser.add_argument('-model', type = json.loads, default = '{"spk_embd_dim":1024,"l_nodes":[512,512,512,2],"input_drop":0.2}')
-
-    #flag
-    parser.add_argument('-make_trial', type = str2bool, nargs='?', const=True, default = False)
-    parser.add_argument('-amsgrad', type = str2bool, nargs='?', const=True,  default = True)
-    parser.add_argument('-nesterov', type = str2bool, nargs='?', const=True,  default = False)
-    parser.add_argument('-comet_disable', type = str2bool, nargs='?', const=True,  default = False)
-    parser.add_argument('-save_best_only', type = str2bool, nargs='?', const=True,  default = True)
-    parser.add_argument('-do_lr_decay', type = str2bool, nargs='?', const=True,  default = True)
-    parser.add_argument('-mg', type = str2bool, nargs='?', const=True,  default = False)
-    
     args = parser.parse_args()
 
     with open(args.embd_dir + 'TTA_vox1_dev.pk', 'rb') as f:
