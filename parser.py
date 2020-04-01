@@ -23,13 +23,13 @@ def get_args():
     parser.add_argument('-eval_wav', type = str, default = 'eval_wav/')
     
     #hyper-params
-    parser.add_argument('-bs', type = int, default = 120)
+    parser.add_argument('-bs', type = int, default = 100)
     parser.add_argument('-lr', type = float, default = 0.001)
     parser.add_argument('-nb_samp', type = int, default = 59049)
     parser.add_argument('-window_size', type = int, default = 11810)
     
     parser.add_argument('-wd', type = float, default = 0.0001)
-    parser.add_argument('-epoch', type = int, default = 40)
+    parser.add_argument('-epoch', type = int, default = 80)
     parser.add_argument('-optimizer', type = str, default = 'Adam')
     parser.add_argument('-nb_worker', type = int, default = 8)
     parser.add_argument('-temp', type = float, default = .5)
