@@ -18,6 +18,8 @@ from torch.utils import data
 import soundfile as sf
 import pickle as pk
 
+from model_RawNet2_original_code import RawNet
+
 def cos_sim(a,b):
     return np.dot(a,b) / (np.linalg.norm(a) * np.linalg.norm(b))
 
@@ -80,7 +82,7 @@ def main():
     #dir
     parser.add_argument('-name', type = str, required = True)
     parser.add_argument('-save_dir', type = str, default = '/exp/DNNs/')
-    parser.add_argument('-embd_dir', type=str, default = '/DB/embd/202002_vox_RawNet2/TTA_')
+    parser.add_argument('-embd_dir', type=str, default = '../spk_embd/')
 
     #hyper-params
     parser.add_argument('-bs', type = int, default = 120)
@@ -107,31 +109,16 @@ def main():
     
     args = parser.parse_args()
 
-    #device setting
-    cuda = torch.cuda.is_available()
-    device = torch.device('cuda' if cuda else 'cpu')
-    print('Device: {}'.format(device))
-    
-    #set save directory
-    save_dir = args.save_dir+args.name+'/'
-    if not os.path.exists(save_dir):
-        os.makedirs(save_dir)
-    if not os.path.exists(save_dir+'results/'):
-        os.makedirs(save_dir+'results/')
-    if not os.path.exists(save_dir+'models/'):
-        os.makedirs(save_dir+'models/')
-
-
-    with open(args.embd_dir + 'vox1_dev.pk', 'rb') as f:
+    with open(args.embd_dir + 'TTA_vox1_dev.pk', 'rb') as f:
         d_embd_vox1_dev = pk.load(f)
 
-    with open(args.embd_dir + 'vox1_eval.pk', 'rb') as f:
+    with open(args.embd_dir + 'TTA_vox1_eval.pk', 'rb') as f:
         d_embd_vox1_eval = pk.load(f)
 
     d_embd_vox1 = {**d_embd_vox1_dev, **d_embd_vox1_eval}
 
-    f_eer = open(save_dir + 'eers.txt', 'a', buffering = 1)
-    with open('/DB/VoxCeleb2/veri_test.txt' , 'r') as f:
+    f_eer = open('./eers.txt', 'a', buffering = 1)
+    with open('../trials/vox_original.txt' , 'r') as f:
         l_eval_trial = f.readlines()
     evalset_sv = Dataset_embd(
         d_embd = d_embd_vox1_eval,
@@ -145,25 +132,7 @@ def main():
     eval_eer = evaluate_init_model(
         db_gen = evalset_sv_gen 
         )
-    text = 'Original Vox evaluation EER: {}'.format(eval_eer)
-    print(text)
-    f_eer.write(text+'\n')
-
-    with open('/DB/VoxCeleb2/list_test_all.txt' , 'r') as f:
-        l_eval_trial = f.readlines()
-    evalset_sv = Dataset_embd(
-        d_embd = d_embd_vox1,
-        trials = l_eval_trial,
-        mode = 'eval')
-    evalset_sv_gen = data.DataLoader(evalset_sv,
-        batch_size = args.bs, 
-        shuffle = False,
-        drop_last = False,
-        num_workers = args.nb_worker)
-    eval_eer = evaluate_init_model(
-        db_gen = evalset_sv_gen 
-        )
-    text = 'Vox1_E evaluation EER: {}'.format(eval_eer)
+    text = 'Vox original evaluation EER: {}'.format(eval_eer)
     print(text)
     f_eer.write(text+'\n')
 
@@ -182,24 +151,6 @@ def main():
         db_gen = evalset_sv_gen 
         )
     text = 'Vox1_E_cleaned evaluation EER: {}'.format(eval_eer)
-    print(text)
-    f_eer.write(text+'\n')
-
-    with open('/DB/VoxCeleb2/list_test_hard.txt' , 'r') as f:
-        l_eval_trial = f.readlines()
-    evalset_sv = Dataset_embd(
-        d_embd = d_embd_vox1,
-        trials = l_eval_trial,
-        mode = 'eval')
-    evalset_sv_gen = data.DataLoader(evalset_sv,
-        batch_size = args.bs, 
-        shuffle = False,
-        drop_last = False,
-        num_workers = args.nb_worker)
-    eval_eer = evaluate_init_model(
-        db_gen = evalset_sv_gen 
-        )
-    text = 'Vox1_H evaluation EER: {}'.format(eval_eer)
     print(text)
     f_eer.write(text+'\n')
 
