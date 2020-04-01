@@ -11,7 +11,9 @@ which is submitted to Interspeech2020 as a conference paper.
 	
 
 #  Using pre-trained model
-	TBA
+
+1. Go into Pre-trained_model folder. 
+2. 
 
 
 
