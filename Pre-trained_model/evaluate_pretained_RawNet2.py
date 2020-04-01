@@ -1,22 +1,15 @@
 from tqdm import tqdm
-from collections import OrderedDict
 from sklearn.metrics import roc_curve
 from scipy.optimize import brentq
 from scipy.interpolate import interp1d
-from torch.optim.lr_scheduler import _LRScheduler
-from math import cos, pi
 
-import os
 import argparse
-import json
 import numpy as np
+import pickle as pk
 
 import torch
 import torch.nn as nn
 from torch.utils import data
-
-import soundfile as sf
-import pickle as pk
 
 from model_RawNet2_original_code import RawNet
 
