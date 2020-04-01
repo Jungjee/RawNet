@@ -1,9 +1,6 @@
 # Notice
-We are preparing a new version of RawNet which will be submitted to Interspeech 2020 :)
-We are currently looking at an EER about 2.4%, training with VoxCeleb2. 
-When RawNet2 is uploaded, both Keras and PyTorch implementation of current RawNet will be moved to folder 'RawNet'.
-Wait for further announcements :)!
-
+This repository is under update to reflect codes for reproducing our recent paper. 
+For reproduction of the original RawNet paper, please refer to `RawNet1' folder
 
 # Overview
 
@@ -61,12 +58,4 @@ If you used the codes of this repository, please cite  [RawNet: Advanced end-to-
 
 
 # Log
-- 2019.04.17. : 01 script executing
-- 2019.04.24. : 01 script verified
-- 2019.04.29. : 02 script executing 
-- 2019.04.29. : 02 script verified
-- 2019.10.14. : short utterance preparation script added regarding ASRU 2019 paper
-- 2019.10.22. : Previous scripts and data moved under "Keras"
-- 2019.10.22. : Add citation guidelines
-- 2019.10.22. : Initial commit of PyTorch scripts
-- 2019.11.05. : PyTorch baseline on VoxCeleb2 
+- 2020.04.01. : initial commit
