@@ -1,10 +1,10 @@
 # Notice
 This repository is under update to reflect codes for reproducing our recent paper. 
-For reproduction of the original RawNet paper, please refer to `RawNet1' folder
+For reproduction of the original RawNet paper, please refer to `RawNet1' folder.
 
 # Overview
 This github project includes PyTorch implementation for reproducing experiments and DNN models used in the paper
-[Improved RawNet with Filter-wise Re-scaling for Text-independent Speaker Verification using Raw Waveforms]( https://isca-speech.org/archive/Interspeech_2019/pdfs/1982.pdf ) 
+[Improved RawNet with Filter-wise Re-scaling for Text-independent Speaker Verification using Raw Waveforms]( https://arxiv.org/pdf/2004.00526.pdf ) 
 which is submitted to Interspeech2020 as a conference paper. 
 Pre-trained model is available at 'Pre-trained_model/rawnet2_best_weights.pt' and extracted speaker embeddings are available at 'spk_embd/'. 
 
