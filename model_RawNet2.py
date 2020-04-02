@@ -13,11 +13,12 @@ class FRM(nn.Module):
     def __init__(self, nb_dim, do_add = True, do_mul = True):
         super(FRM, self).__init__()
         self.fc = nn.Linear(nb_dim, nb_dim)
+        self.sig = nn.Sigmoid()
         self.do_add = do_add
         self.do_mul = do_mul
     def forward(self, x):
         y = F.adaptive_avg_pool1d(x, 1).view(x.size(0), -1)
-        y = F.sigmoid(self.fc(y), inplace = True).view(y.size(0), y.size(1), -1)
+        y = self.sig(self.fc(y)).view(x.size(0), x.size(1), -1)
 
         if self.do_mul: x = x * y
         if self.do_add: x = x + y
@@ -55,7 +56,7 @@ class Residual_block_wFRM(nn.Module):
         else:
             self.downsample = False
         self.mp = nn.MaxPool1d(3)
-        self.frm = self.FRM(
+        self.frm = FRM(
             nb_dim = nb_filts[1],
             do_add = True,
             do_mul = True)

@@ -48,6 +48,7 @@ def get_args():
     parser.add_argument('-m_nb_fc_node', type = int, default = 1024)
     parser.add_argument('-m_gru_node', type = int, default = 1024)
     parser.add_argument('-m_nb_gru_layer', type = int, default = 1)
+    parser.add_argument('-m_nb_samp', type = int, default = 59049)
     
     #flag
     parser.add_argument('-amsgrad', type = str2bool, nargs='?', const=True, default = True)
