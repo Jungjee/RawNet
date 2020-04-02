@@ -15,9 +15,9 @@ def get_args():
     parser = argparse.ArgumentParser()
     #dir
     parser.add_argument('-name', type = str, required = True)
-    parser.add_argument('-save_dir', type = str, default = '/exp/DNNs/')
-    parser.add_argument('-DB', type = str, default = '/DB/VoxCeleb1/')
-    parser.add_argument('-DB_vox2', type = str, default = '/DB/VoxCeleb2/')
+    parser.add_argument('-save_dir', type = str, default = 'DNNs/')
+    parser.add_argument('-DB', type = str, default = 'DB/VoxCeleb1/')
+    parser.add_argument('-DB_vox2', type = str, default = 'DB/VoxCeleb2/')
     parser.add_argument('-dev_wav', type = str, default = 'wav/')
     parser.add_argument('-val_wav', type = str, default = 'dev_wav/')
     parser.add_argument('-eval_wav', type = str, default = 'eval_wav/')

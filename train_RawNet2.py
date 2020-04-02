@@ -154,7 +154,6 @@ def main():
     ##########################################
     #Train####################################
     ##########################################
-    best_val_eer = 99.
     best_TA_eval_eer = 99.
     f_eer = open(save_dir + 'eers.txt', 'a', buffering = 1)
     for epoch in tqdm(range(args.epoch)):
@@ -167,19 +166,6 @@ def main():
             criterion = criterion,
             device = device,
             epoch = epoch)
-
-
-        #validation phase
-        val_eer = evaluate_model(mode = 'val',
-            model = model,
-            db_gen = valset_gen, 
-            l_utt = l_val,
-            save_dir = save_dir,
-            epoch = epoch,
-            device = device,
-            l_trial = l_val_trial,
-            args = args)
-        f_eer.write('epoch:%d, val_eer:%.4f\n'%(epoch, val_eer))
         
         TA_eval_eer = time_augmented_evaluate_model(mode = 'eval',
             model = model,
@@ -193,15 +179,6 @@ def main():
         f_eer.write('epoch:%d, TA_eval_eer:%.4f\n'%(epoch, TA_eval_eer))
         
         save_model_dict = model_1gpu.state_dict() if args.mg else model.state_dict()
-
-        #record best validation model
-        if float(val_eer) < best_val_eer:
-            print('New best validation EER: %f'%float(val_eer))
-            best_val_eer = float(val_eer)
-
-            torch.save(save_model_dict, save_dir +  'models/best_val.pt')
-            torch.save(optimizer.state_dict(), save_dir + 'models/best_opt_val.pt')
-            
         if float(TA_eval_eer) < best_TA_eval_eer:
             print('New best TA_EER: %f'%float(TA_eval_eer))
             best_TA_eval_eer = float(TA_eval_eer)
