@@ -1,6 +1,9 @@
 # Notice
-This repository is under update to reflect codes for reproducing our recent paper. 
-For reproduction of the original RawNet paper, please refer to `RawNet1' folder.
+This repository is under update to reflect codes for reproducing our recent RawNet2 paper.    
+Evaluation using the pre-trained model and extracted speaker embeddings are validated.      
+Train using 'train_RawNet2.py' is not yet validated.     
+      
+**For reproduction of the original RawNet paper, please refer to `RawNet1' folder.**
 
 # Overview
 This github project includes PyTorch implementation for reproducing experiments and DNN models used in the paper
@@ -23,11 +26,10 @@ We used Nvidia GPU Cloud for conducting our experiments. We used the 'nvcr.io/nv
 1. Go into Pre-trained_model folder. 
 2. Download extracted RawNet2 speaker embeddings for the VoxCeleb1 devset [Here]( https://www.dropbox.com/s/2y4k5rap8cztcrf/TTA_vox1_dev.pk?dl=0 )
 (Too big to upload in Github)
+3. Move downloaded speaker embedding to 'spk_embd/'
+4. Run 'evaluate_pretrained_RawNet2.py'    
 
-3. Run 'evaluate_pretrained_RawNet2.py'
-
-
-
+**We encourage to use the extracted speaker embeddings for further speaker embedding enhancement studies or back-end studies since RawNet2 paper adopts simple cosine similarity for back-end classification.**
 
 
 ##### Email jeewon.leo.jung@gmail.com for other details :-).
@@ -49,3 +51,4 @@ TBA
 
 # Log
 - 2020.04.01. : initial commit
+- 2020.04.02. : Evaluate Pre-trained Model validated
