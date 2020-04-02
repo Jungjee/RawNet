@@ -19,7 +19,7 @@ We used Nvidia GPU Cloud for conducting our experiments. We used the 'nvcr.io/nv
 ## Training RawNet2
 
 1. Download VoxCeleb1&2 datasets and move to *DB/*.       
-(or just give directories to your DB as arguments using *-DB DIR_TO_VOX1* and *DB_vox2 DIR_TO_VOX2*)    
+(or just give directories to your DB as arguments using *--DB DIR_TO_VOX1* and *--DB_vox2 DIR_TO_VOX2*)    
 Filetree will be added as reference in meantime. 
 
 2. (selectively) Enter virtual environment using NGC. 
