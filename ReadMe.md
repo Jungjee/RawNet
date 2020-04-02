@@ -28,7 +28,12 @@ Filetree will be added as reference in meantime.
 3. Move downloaded speaker embedding to *spk_embd/*
 4. Run *evaluate_pretrained_RawNet2.py*    
 
-**We encourage to use the extracted speaker embeddings for further speaker embedding enhancement studies or back-end studies since RawNet2 paper adopts simple cosine similarity for back-end classification.**
+## Utilizing Extracted Speaker Embeddings. 
+We encourage to use the extracted speaker embeddings for further speaker embedding enhancement studies or back-end studies since RawNet2 paper adopts simple cosine similarity for back-end classification.     
+
+Speaker embeddings are located under *spk_embd/* and are saved using pickle, where it contains a dictionay.    
+Key   : Utterance ID (Spk/videoID/segID)
+Value : Speaker embedding
 
 
 ##### Email jeewon.leo.jung@gmail.com for other details :-).
