@@ -63,11 +63,12 @@ def evaluate_init_model(db_gen):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-embd_dir', type=str, default = '../spk_embd/')
+    parser.add_argument('-bs', type=int, default = 100) #batch size
+    parser.add_argument('-nb_worker', type=int, default = 4) #number of workers for PyTorch DataLoader
     args = parser.parse_args()
 
     with open(args.embd_dir + 'TTA_vox1_dev.pk', 'rb') as f:
         d_embd_vox1_dev = pk.load(f)
-
     with open(args.embd_dir + 'TTA_vox1_eval.pk', 'rb') as f:
         d_embd_vox1_eval = pk.load(f)
 
@@ -92,7 +93,7 @@ def main():
     print(text)
     f_eer.write(text+'\n')
 
-    with open('/DB/VoxCeleb2/list_test_all_cleaned.txt' , 'r') as f:
+    with open('../trials/list_test_all_cleaned.txt' , 'r') as f:
         l_eval_trial = f.readlines()
     evalset_sv = Dataset_embd(
         d_embd = d_embd_vox1,
@@ -110,7 +111,7 @@ def main():
     print(text)
     f_eer.write(text+'\n')
 
-    with open('/DB/VoxCeleb2/list_test_hard_cleaned.txt' , 'r') as f:
+    with open('../trials/list_test_hard_cleaned.txt' , 'r') as f:
         l_eval_trial = f.readlines()
     evalset_sv = Dataset_embd(
         d_embd = d_embd_vox1,
