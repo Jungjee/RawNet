@@ -38,10 +38,17 @@ Value : Speaker embedding
 
 ##### Email jeewon.leo.jung@gmail.com for other details :-).
 
-# Citation
+# BibTex
 
-TBA
-
+This reposity provides the code for reproducing below papers. 
+```
+@article{jung2020improved,
+  title={Improved RawNet with Filter-wise Rescaling for Text-independent Speaker Verification using Raw Waveforms},
+  author={Jung, Jee-weon and Kim, Seung-bin and Shim, Hye-jin and Kim, Ju-ho and Yu, Ha-Jin},
+  journal={arXiv preprint arXiv:2004.00526},
+  year={2020}
+}
+```
 ```
 @article{jung2019RawNet,
   title={RawNet: Advanced end-to-end deep neural network using raw waveforms for text-independent speaker verification},
