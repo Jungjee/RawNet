@@ -20,9 +20,12 @@ def main():
     #parse arguments
     args = get_args()
 
-    #set random seed
-    torch.manual_seed(args.seed)
-    np.random.seed(args.seed)
+    #make experiment reproducible if specified
+    if args.reproducible:
+        torch.manual_seed(args.seed)
+        np.random.seed(args.seed)
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
 
     #device setting
     cuda = torch.cuda.is_available()

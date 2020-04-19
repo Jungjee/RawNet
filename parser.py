@@ -59,6 +59,7 @@ def get_args():
     parser.add_argument('-do_lr_decay', type = str2bool, nargs='?', const=True, default = True)
     parser.add_argument('-mg', type = str2bool, nargs='?', const=True, default = True)
     parser.add_argument('-load_model', type = str2bool, nargs='?', const=True, default = False)
+    parser.add_argument('-reproducible', type = str2bool, nargs='?', const=True, default = True)
 
     args = parser.parse_args()
     args.model = {}
