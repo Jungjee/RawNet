@@ -1,0 +1,42 @@
+name: RawNet_Vox2
+#name: test
+DB: /DB/VoxCeleb1/
+DB_vox2: /DB/VoxCeleb2/
+dev_wav: wave_np/
+val_wav: dev_wave_np/
+eval_wav: eval_wave_np/
+seed: 1016
+nb_proc_db: 12
+save_dir: /exp/DNNs/
+optimizer: Adam #sgd
+lr: 0.001
+#opt_mom: 0.9 #for sgd
+wd: 0.0001
+epoch: 40
+#pretrn_epoch: 30 #needed for vox1 trn
+batch_size: 120
+nb_time: 59049
+nb_val_trial: 40000
+#bc_loss_weight: 0.1 #for future update
+lr_decay: keras
+
+#flags
+#comet_disable: 0
+#nesterov: 0 #for sgd optim
+amsgrad: 1 #for adam optim
+save_best_only: 0
+make_val_trial: 1
+mg: 1
+do_lr_decay: 1
+
+#model-related
+model:
+  first_conv: 3
+  in_channels: 1
+  filts: [128, [128, 128], [128, 256], [256, 256]]
+  blocks: [2, 4]
+  nb_fc_node: 1024
+  gru_node: 1024
+  nb_gru_layer: 1
+  #pre_trn: 1 #flag
+  #negative_k: 50
