@@ -61,9 +61,9 @@ This reposity provides the code for reproducing below papers.
 
 # TO-DO
 1. Add comments to codes. 
-2. Add filetree of Datasets
 
 # Log
 - 2020.04.01. : Initial commit
 - 2020.04.02. : Evaluate Pre-trained Model validated
 - 2020.04.02. : Evaluated training
+- 2020.04.02. : Add filetree of Datasets
