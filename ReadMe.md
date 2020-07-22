@@ -23,7 +23,7 @@ Filetree will be added as reference in meantime.
 ##  Evaluating the Trained Model to achieve EER reported in the paper.
 
 1. Go into Pre-trained_model folder. 
-2. Download extracted RawNet2 speaker embeddings for the VoxCeleb1 devset [Here]( https://www.dropbox.com/s/2y4k5rap8cztcrf/TTA_vox1_dev.pk?dl=0 )
+2. Download extracted RawNet2 speaker embeddings for the VoxCeleb1 devset [Here]( https://www.dropbox.com/sh/5ext8tk6w6pwuaq/AADl5vE2gSb1R2YjpdUB9Yhha?dl=0 )
 (Too big to upload in Github)
 3. Move downloaded speaker embedding to *spk_embd/*
 4. Run *evaluate_pretrained_RawNet2.py*    
