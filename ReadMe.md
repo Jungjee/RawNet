@@ -1,7 +1,7 @@
 # Overview
 This github project includes PyTorch implementation for reproducing experiments and DNN models used in the paper
 [Improved RawNet with Feature Map Scaling for Text-independent Speaker Verification using Raw Waveforms]( https://arxiv.org/pdf/2004.00526.pdf ) 
-which is submitted to Interspeech2020 as a conference paper. 
+which is for presentation at Interspeech2020 as a conference paper. 
 Trained model is available at 'Pre-trained_model/rawnet2_best_weights.pt' and extracted speaker embeddings are available at *spk_embd/*. 
 
 **For reproduction of the original RawNet paper, please refer to 'RawNet1' folder.**
@@ -45,7 +45,8 @@ This reposity provides the code for reproducing below papers.
 @article{jung2020improved,
   title={Improved RawNet with Feature Map Scaling for Text-independent Speaker Verification using Raw Waveforms},
   author={Jung, Jee-weon and Kim, Seung-bin and Shim, Hye-jin and Kim, Ju-ho and Yu, Ha-Jin},
-  journal={arXiv preprint arXiv:2004.00526},
+  journal={Proc. Interspeech 2020(to appear)},
+  pages={3583--3587},
   year={2020}
 }
 ```
@@ -67,3 +68,4 @@ This reposity provides the code for reproducing below papers.
 - 2020.04.02. : Evaluate Pre-trained Model validated
 - 2020.04.02. : Evaluated training
 - 2020.07.10. : Add filetree of Datasets
+- 2020.07.27. : Revise citation and current status
