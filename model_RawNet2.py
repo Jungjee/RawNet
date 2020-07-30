@@ -69,7 +69,7 @@ class Residual_block_wFRM(nn.Module):
         else:
             out = x
             
-        out = self.conv1(x)
+        out = self.conv1(out)
         out = self.bn2(out)
         out = self.lrelu_keras(out)
         out = self.conv2(out)
