@@ -45,7 +45,7 @@ This reposity provides the code for reproducing below papers.
 @article{jung2020improved,
   title={Improved RawNet with Feature Map Scaling for Text-independent Speaker Verification using Raw Waveforms},
   author={Jung, Jee-weon and Kim, Seung-bin and Shim, Hye-jin and Kim, Ju-ho and Yu, Ha-Jin},
-  journal={Proc. Interspeech 2020(to appear)},
+  journal={Proc. Interspeech 2020},
   pages={3583--3587},
   year={2020}
 }
