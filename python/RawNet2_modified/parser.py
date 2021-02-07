@@ -19,15 +19,15 @@ def get_args():
     parser.add_argument("-module_name", type=str, required=True)
     parser.add_argument("-model_name", type=str, required=True)
     parser.add_argument("-save_dir", type=str, default="/exp/DNNs/")
-    parser.add_argument("-DB", type=str, default="/DB/VoxCeleb1/")
-    parser.add_argument("-DB_vox2", type=str, default="/DB/VoxCeleb2/")
+    parser.add_argument("-DB", type=str, default="DB/VoxCeleb1/")
+    parser.add_argument("-DB_vox2", type=str, default="DB/VoxCeleb2/")
     parser.add_argument("-dev_wav", type=str, default="wav/")
     parser.add_argument("-val_wav", type=str, default="dev_wav/")
     parser.add_argument("-eval_wav", type=str, default="eval_wav/")
     parser.add_argument("-ddp_port", type=str, default="8888")
-    parser.add_argument("-musan_dir", type=str, default="/DB/augment/musan_split")
+    parser.add_argument("-musan_dir", type=str, default="DB/augment/musan_split")
     parser.add_argument(
-        "-rir_dir", type=str, default="/DB/augment/RIRS_NOISES/simulated_rirs"
+        "-rir_dir", type=str, default="DB/augment/RIRS_NOISES/simulated_rirs"
     )
 
     # hyper-params
