@@ -1,5 +1,7 @@
 # Overview
-This github project includes PyTorch implementation for reproducing experiments and DNN models used in the paper
+This github project includes implementations of speaker verification systems that input raw waveforms.
+
+
 [Improved RawNet with Feature Map Scaling for Text-independent Speaker Verification using Raw Waveforms]( https://arxiv.org/pdf/2004.00526.pdf ) 
 which is for presentation at Interspeech2020 as a conference paper. 
 Trained model is available at 'Pre-trained_model/rawnet2_best_weights.pt' and extracted speaker embeddings are available at *spk_embd/*. 
