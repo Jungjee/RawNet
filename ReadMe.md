@@ -1,7 +1,7 @@
 # Overview
 This repository includes implementations of speaker verification systems that input raw waveforms.
 
-Currently, it has three systems. 
+Currently, it has three systems in [python](python/). 
 Detailed instructions on each system is described in individual `ReadME` files.
 
 ## RawNet2_modified
