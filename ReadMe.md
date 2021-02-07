@@ -1,3 +1,5 @@
+** look 'refactoring' branch for modified RawNet2
+
 # Overview
 This github project includes PyTorch implementation for reproducing experiments and DNN models used in the paper
 [Improved RawNet with Feature Map Scaling for Text-independent Speaker Verification using Raw Waveforms]( https://www.isca-speech.org/archive/Interspeech_2020/pdfs/1011.pdf ) 
