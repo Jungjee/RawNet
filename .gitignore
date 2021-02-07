@@ -4,3 +4,6 @@ spk_embd/
 # hidden files
 .*
 
+# cache
+__pycache__/
+models/__pycache__/
