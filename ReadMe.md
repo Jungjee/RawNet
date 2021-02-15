@@ -1,15 +1,17 @@
+#### Look [refactoring branch](https://github.com/Jungjee/RawNet/tree/refactoring) for modified RawNet2
+
 # Overview
 This github project includes PyTorch implementation for reproducing experiments and DNN models used in the paper
-[Improved RawNet with Feature Map Scaling for Text-independent Speaker Verification using Raw Waveforms]( https://arxiv.org/pdf/2004.00526.pdf ) 
-which is for presentation at Interspeech2020 as a conference paper. 
-Trained model is available at 'Pre-trained_model/rawnet2_best_weights.pt' and extracted speaker embeddings are available at *spk_embd/*. 
+[Improved RawNet with Feature Map Scaling for Text-independent Speaker Verification using Raw Waveforms]( https://www.isca-speech.org/archive/Interspeech_2020/pdfs/1011.pdf ) 
+which was presented at Interspeech2020 as a conference paper. 
+Trained model is available at [rawnet2_best_weights.pt]( ../master/Pre-trained_model/rawnet2_best_weights.pt ).
 
 **For reproduction of the original RawNet paper, please refer to 'RawNet1' folder.**
 
 # Usage
 
 ## Environment Setting
-We used Nvidia GPU Cloud for conducting our experiments. We used the 'nvcr.io/nvidia/pytorch:19.10-py3' image. Refer to *launch_ngc.sh*. We used two Titan V GPUs for training. 
+We used Nvidia GPU Cloud for conducting our experiments. We used the 'nvcr.io/nvidia/pytorch:19.10-py3' image. Refer to [launch_ngc.sh]( ../master/launch_ngc.sh ). We used two Titan V GPUs for training. 
 
 ## Training RawNet2
 
@@ -18,7 +20,7 @@ We used Nvidia GPU Cloud for conducting our experiments. We used the 'nvcr.io/nv
 Filetree will be added as reference in meantime. 
 
 2. (selectively) Enter virtual environment using NGC. 
-3. Run *train_RawNet2.py -name NAME*
+3. Run ``` train_RawNet2.py -name NAME ``` 
 
 ##  Evaluating the Trained Model to achieve EER reported in the paper.
 
@@ -26,7 +28,7 @@ Filetree will be added as reference in meantime.
 2. Download extracted RawNet2 speaker embeddings for the VoxCeleb1 devset [Here]( https://www.dropbox.com/sh/5ext8tk6w6pwuaq/AADl5vE2gSb1R2YjpdUB9Yhha?dl=0 )
 (Too big to upload in Github)
 3. Move downloaded speaker embedding to *spk_embd/*
-4. Run *evaluate_pretrained_RawNet2.py*    
+4. Run [evaluate_pretrained_RawNet2.py]( ../master/Pre-trained_model/evaluate_pretrained_RawNet2.py )
 
 ## Utilizing Extracted Speaker Embeddings. 
 We encourage to use the extracted speaker embeddings for further speaker embedding enhancement studies or back-end studies since RawNet2 paper adopts simple cosine similarity for back-end classification.     
@@ -59,9 +61,6 @@ This reposity provides the code for reproducing below papers.
   year={2019}
 }
 ```
-
-# TO-DO
-1. Add comments to codes. 
 
 # Log
 - 2020.04.01. : Initial commit
