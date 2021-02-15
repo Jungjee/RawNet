@@ -1,4 +1,4 @@
-** look 'refactoring' branch for modified RawNet2
+#### Look 'refactoring' branch for modified RawNet2
 
 # Overview
 This github project includes PyTorch implementation for reproducing experiments and DNN models used in the paper
