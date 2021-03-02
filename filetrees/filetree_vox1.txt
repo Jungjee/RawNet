@@ -1,0 +1,30 @@
+./VoxCeleb1/
+├── dev_wav
+│   ├── id10001
+│   │   ├── 1zcIwhmdeo4
+│   │   │   ├── 00001.wav
+│   │   │   ├── 00002.wav
+│   │   │   └── 00003.wav
+│   │   ├── 5ssVY9a5X-M
+│   │   │   ├── 00001.wav
+│   │   │   ├── 00002.wav
+│   │   │   ├── 00003.wav
+│   │   │   └── 00003.wav
+│   └── ...
+├── eval_wav
+│   ├── id10270
+│   │   ├── 5r0dWxy17C8
+│   │   │   ├── 00001.wav
+│   │   │   ├── 00002.wav
+│   │   │   ├── 00003.wav
+│   │   │   ├── 00004.wav
+│   │   │   └── 00005.wav
+│   └── ...
+│       ├── _z_BR0ERa9g
+│           ├── 00001.wav
+│           ├── 00002.wav
+│           └── 00003.wav
+├── val_trial.txt
+└── veri_test.txt
+
+23754 directories, 153664 files

@@ -1,0 +1,1 @@
+sudo nvidia-docker run -it --rm --ipc=host --shm-size 20G -v ~/Dropbox/RawNet:/code -v ~/nvme512/DB:/DB -v ~/HDD8tb/202002_vox_RawNet2:/exp nvcr.io/nvidia/pytorch:19.10-py3
