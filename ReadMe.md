@@ -3,6 +3,14 @@ This repository includes implementations of speaker verification systems that in
 
 Currently, it has three systems in [python](python/). 
 Detailed instructions on each system is described in individual `ReadME` files.
+## RawNet3
+- TBA
+- PyTorch implementation
+- Performance
+  - supervised learning with AAM-Softmax: EER 0.89%
+  - self-supervised learning: EER 5.40%
+- Planned to be served also in https://github.com/clovaai/voxceleb_trainer 
+  - Details are not yet decided fully, however, training is likely to be supported in the voxceleb_trainer repository
 
 ## RawNet2_modified
 - Code refactoring
