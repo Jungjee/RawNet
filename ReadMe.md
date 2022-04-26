@@ -11,6 +11,16 @@ Detailed instructions on each system is described in individual `ReadME` files.
   - self-supervised learning: EER 5.40%
 - Planned to be served also in https://github.com/clovaai/voxceleb_trainer 
   - Details are not yet decided fully, however, training is likely to be supported in the voxceleb_trainer repository
+- Submitted to Interspeech 2022
+```
+@article{jung2022pushing,
+  title={Pushing the limits of raw waveform speaker recognition},
+  author={Jung, Jee-weon and Kim, You Jin and Heo, Hee-Soo and Lee, Bong-Jin and Kwon, Youngki and Chung, Joon Son},
+  journal={arXiv preprint},
+  volume={2203},
+  year={2022}
+}
+```
 
 ## RawNet2_modified
 - Code refactoring
