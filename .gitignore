@@ -7,3 +7,6 @@ spk_embd/
 # cache
 __pycache__/
 models/__pycache__/
+
+# output files
+*.npy
