@@ -1,23 +1,25 @@
 # Overview
 This repository includes implementations of speaker verification systems that input raw waveforms.
 
-Currently, it has three systems in [python](python/). 
+Currently, it includes four systems in [python](python/). 
 Detailed instructions on each system is described in individual `ReadME` files.
 ## RawNet3
-- TBA
 - PyTorch implementation
 - Performance
   - supervised learning with AAM-Softmax: EER 0.89%
   - self-supervised learning: EER 5.40%
-- Planned to be served also in https://github.com/clovaai/voxceleb_trainer 
-  - Details are not yet decided fully, however, training is likely to be supported in the voxceleb_trainer repository
-- Submitted to Interspeech 2022
+- Training recipe
+  - Will be served in https://github.com/clovaai/voxceleb_trainer 
+- Inference
+  - Pre-trained weight parameters are stored in [HuggingFace](https://huggingface.co/jungjee/RawNet3) and is included as a submodule.
+  - Vox1-O benchmark is available in [RawNet3](python/RawNet3).
+  - Extracting speaker embedding from any 16k 16bit mono utterance is supported.
+- Published as a conference paper in Interspeech 2022. 
 ```
 @article{jung2022pushing,
   title={Pushing the limits of raw waveform speaker recognition},
   author={Jung, Jee-weon and Kim, You Jin and Heo, Hee-Soo and Lee, Bong-Jin and Kwon, Youngki and Chung, Joon Son},
-  journal={arXiv preprint},
-  volume={2203},
+  journal={Proc. Interspeech},
   year={2022}
 }
 ```
@@ -52,7 +54,7 @@ Detailed instructions on each system is described in individual `ReadME` files.
 @article{jung2020improved,
   title={Improved RawNet with Feature Map Scaling for Text-independent Speaker Verification using Raw Waveforms},
   author={Jung, Jee-weon and Kim, Seung-bin and Shim, Hye-jin and Kim, Ju-ho and Yu, Ha-Jin},
-  journal={Proc. Interspeech 2020},
+  journal={Proc. Interspeech},
   pages={3583--3587},
   year={2020}
 }
@@ -71,7 +73,7 @@ Detailed instructions on each system is described in individual `ReadME` files.
 @article{jung2019RawNet,
   title={RawNet: Advanced end-to-end deep neural network using raw waveforms for text-independent speaker verification},
   author={Jung, Jee-weon and Heo, Hee-soo and Kim, ju-ho and Shim, Hye-jin and Yu, Ha-jin},
-  journal={Proc. Interspeech 2019},
+  journal={Proc. Interspeech},
   pages={1268--1272},
   year={2019}
 }
