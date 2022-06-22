@@ -5,7 +5,7 @@ Inference of any utterance with 16k 16bit mono format and Vox1-O benchmark is
 supported in this repository.
 
 Training recipe, on the other hand, will be supported in 
-https://github.com/voxceleb_trainer.
+https://github.com/clovaai/voxceleb_trainer.
 
 Model weight parameters are served by huggingface at 
 https://huggingface.co/jungjee/RawNet3, which is used as a submodule here
