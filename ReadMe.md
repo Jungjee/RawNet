@@ -2,7 +2,34 @@
 This repository includes implementations of speaker verification systems that input raw waveforms.
 
 Currently, it includes four systems in [python](python/). 
-Detailed instructions on each system is described in individual `ReadME` files.
+Detailed instructions on each system are described in individual `ReadME` files.
+
+## RawNet3 in ESPnet
+As a part of an open-source project, [ESPnet-SPK](https://arxiv.org/abs/2401.17230), pre-trained RawNet3 using the ESPnet-SPK framework is supported for easy access.
+Albeit the same architecture, with an enhanced framework, the performance has further improved slightly.
+- Performance
+  - Vox1-O: EER 0.73%
+ 
+### Usage
+As mentioned in Figure 3 of the [ESPnet-SPK](https://arxiv.org/abs/2401.17230) paper, the below few lines of code are sufficient to extract RawNet3 embeddings.
+Refer to the code snippet below and replace `np.zeros` with your raw waveform.
+- ESPnet installation is a prerequisite
+```
+import numpy as np 
+from espnet2.bin.spk_inference import Speech2Embedding
+
+speech2spk_embed = Speech2Embedding.from_pretrained(model_tag="espnet/voxcelebs12_rawnet3")
+embedding = speech2spk_embed(np.zeros(16500)) 		 
+```
+
+ESPnet-SPK is currently on arXiv.
+@article{jung2024espnet,
+  title={ESPnet-SPK: full pipeline speaker embedding toolkit with reproducible recipes, self-supervised front-ends, and off-the-shelf models},
+  author={Jung, Jee-weon and Zhang, Wangyou and Shi, Jiatong and Aldeneh, Zakaria and Higuchi, Takuya and Theobald, Barry-John and Abdelaziz, Ahmed Hussen and Watanabe, Shinji},
+  journal={arXiv preprint arXiv:2401.17230},
+  year={2024}
+}
+
 ## RawNet3
 - PyTorch implementation
 - Performance
@@ -63,7 +90,7 @@ Detailed instructions on each system is described in individual `ReadME` files.
 - DNN-based speaker embedding extractor used with another DNN-based classifier
   - Built on top of authors' previous works on raw waveform speaker verification
     - [ICASSP2018](https://ieeexplore.ieee.org/abstract/document/8462575) and [Interspeech2018](https://www.isca-speech.org/archive/Interspeech_2018/pdfs/1608.pdf)
-  - EER 4.8% with cosine simaility back-end, 4.0% with proposed concat&mul back-end
+  - EER 4.8% with cosine similarity back-end, 4.0% with proposed concat&mul back-end
     - VoxCeleb1 original trial
 - Implemented in Keras and PyTorch
 - Published as a conference paper in Interspeech 2019. 
