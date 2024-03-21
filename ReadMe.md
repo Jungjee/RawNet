@@ -23,12 +23,14 @@ embedding = speech2spk_embed(np.zeros(16500))
 ```
 
 ESPnet-SPK is currently on arXiv.
+```
 @article{jung2024espnet,
   title={ESPnet-SPK: full pipeline speaker embedding toolkit with reproducible recipes, self-supervised front-ends, and off-the-shelf models},
   author={Jung, Jee-weon and Zhang, Wangyou and Shi, Jiatong and Aldeneh, Zakaria and Higuchi, Takuya and Theobald, Barry-John and Abdelaziz, Ahmed Hussen and Watanabe, Shinji},
   journal={arXiv preprint arXiv:2401.17230},
   year={2024}
 }
+```
 
 ## RawNet3
 - PyTorch implementation
